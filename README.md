@@ -9,6 +9,10 @@ Two intersecting triangles with different fragment shaders.
 ![tag1](Task1/imgs/result.png "Static triangles")
 
 
+--------------------------
+## Task2
+Camera rotation for triangles from previous tasks.
+![tag2](Task2/imgs/result.gif "Static triangles")
 
 
 
