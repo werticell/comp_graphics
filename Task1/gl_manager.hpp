@@ -38,7 +38,6 @@ class GlManager {
   }
 
   // Opens a window and creates its OpenGL context.
-  // Returns nullptr on error.
   bool MakeWindow(std::string name) {
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, kMajorVersion);
@@ -72,6 +71,11 @@ class GlManager {
         glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
         break;
     }
+  }
+
+  // Ensures that we can capture the escape key.
+  void CheckEscKey() const {
+    glfwSetInputMode(window_, GLFW_STICKY_KEYS, GL_TRUE);
   }
 
  private:

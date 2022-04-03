@@ -2,7 +2,7 @@
 #include <glfw3.h>
 #include <glm.hpp>
 
-#include <shader.hpp>
+#include <shader_loader.hpp>
 #include "gl_manager.hpp"
 
 #include <iostream>
@@ -17,11 +17,8 @@ int main() {
     std::cout << "Failed to initialize. Closing...";
     return 1;
   }
-  // Ensure we can capture the escape key being pressed below
-  glfwSetInputMode(manager.GetWindow(), GLFW_STICKY_KEYS, GL_TRUE);
-
+  manager.CheckEscKey();
   manager.SetBackgroundColor(Colors::kWhite);
-
   manager.EnableBlending();
 
   // Create and compile our GLSL programs from the shaders
