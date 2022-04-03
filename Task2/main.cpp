@@ -85,7 +85,7 @@ int main() {
     // Find current View matrix.
     view = glm::lookAt(glm::vec3(current_camera_pos),  // Position in world.
                        glm::vec3(0, 0, 0),             // Point to look at.
-                       glm::vec3(0, 1, 0)              // Up head direction.
+                       glm::vec3(0.4, 1, 0.3)          // Up head direction.
     );
 
     mvp = projection * view * model;
