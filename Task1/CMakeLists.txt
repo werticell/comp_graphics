@@ -1,7 +1,6 @@
 add_executable(Task1
     main.cpp
     gl_manager.hpp
-    ${CMAKE_SOURCE_DIR}/support/shader.hpp
 )
 
 # Outputs executable to current @Task_n/bin directory
