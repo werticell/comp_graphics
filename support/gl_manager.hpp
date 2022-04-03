@@ -4,7 +4,7 @@
 #include <glfw3.h>
 #include <glm.hpp>
 
-#include <unordered_map>
+#include <string>
 
 namespace framework {
 
@@ -38,15 +38,7 @@ class GlManager {
   }
 
   // Opens a window and creates its OpenGL context.
-  bool MakeWindow(std::string name) {
-    glfwWindowHint(GLFW_SAMPLES, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, kMajorVersion);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, kMinorVersion);
-
-    window_ = glfwCreateWindow(kWidth, kHeight, name.c_str(), nullptr, nullptr);
-    glfwMakeContextCurrent(window_);
-    return window_ != nullptr;
-  }
+  bool MakeWindow(std::string name);
 
   GLFWwindow* GetWindow() const {
     return window_;
@@ -62,26 +54,21 @@ class GlManager {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   }
 
-  void SetBackgroundColor(BackgroundColors color) const {
-    switch (color) {
-      case kWhite:
-        glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-        break;
-      case kDarkBlue:
-        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-        break;
-    }
-  }
+  void SetBackgroundColor(BackgroundColors color) const;
 
   // Ensures that we can capture the escape key.
   void CheckEscKey() const {
     glfwSetInputMode(window_, GLFW_STICKY_KEYS, GL_TRUE);
   }
 
+  void EnableLessDepthTest() const {
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+  }
+
  private:
   GLFWwindow* window_ = nullptr;
   bool glfw_initialised_ = false;
-
 };
 
 }  // namespace framework

@@ -5,7 +5,7 @@
 #include <gtc/matrix_transform.hpp>
 
 #include <shader_loader.hpp>
-#include "gl_manager.hpp"
+#include <gl_manager.hpp>
 
 #include <iostream>
 

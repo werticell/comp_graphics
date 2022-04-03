@@ -3,7 +3,7 @@
 #include <glm.hpp>
 
 #include <shader_loader.hpp>
-#include "gl_manager.hpp"
+#include <gl_manager.hpp>
 
 #include <iostream>
 

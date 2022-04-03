@@ -22,6 +22,8 @@ set(GLFW_LINK /usr/local/Cellar/glfw/3.3.6/lib/libglfw.3.dylib)
 add_library(GLSupport
     support/shader_loader.hpp
     support/shader_loader.cpp
+    support/gl_manager.hpp
+    support/gl_manager.cpp
 )
 
 link_libraries(${OPENGL} ${GLEW_LINK} ${GLFW_LINK} GLSupport)
@@ -33,5 +35,5 @@ include_directories(support)
 # Tasks subdirectories
 add_subdirectory(Task1)
 add_subdirectory(Task2)
-
+add_subdirectory(Task3)
 

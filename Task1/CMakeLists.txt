@@ -1,6 +1,5 @@
 add_executable(Task1
     main.cpp
-    gl_manager.hpp
 )
 
 # Outputs executable to current @Task_n/bin directory
@@ -23,7 +22,3 @@ execute_process(
 
 target_link_libraries(Task1 "-framework OpenGL")
 target_link_libraries(Task1 "-framework GLUT")
-
-
-
-
