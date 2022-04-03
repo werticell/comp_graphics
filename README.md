@@ -6,7 +6,7 @@ OpenGL tasks on computer graphics course.
 ------------------------
 ## Task1
 Two intersecting triangles with different fragment shaders.
-![tag1](Task1/imgs/task1 "Static triangles")
+![tag1](Task1/imgs/task1.png "Static triangles")
 
 
 
