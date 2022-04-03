@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+using Colors = framework::GlManager::BackgroundColors;
+
 int main() {
   framework::GlManager manager;
 
@@ -18,12 +20,9 @@ int main() {
   // Ensure we can capture the escape key being pressed below
   glfwSetInputMode(manager.GetWindow(), GLFW_STICKY_KEYS, GL_TRUE);
 
-  // White background color
-  glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+  manager.SetBackgroundColor(Colors::kWhite);
 
-  // Enable blending
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  manager.EnableBlending();
 
   // Create and compile our GLSL programs from the shaders
   GLuint program_id1 =

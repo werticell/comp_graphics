@@ -4,6 +4,8 @@
 #include <glfw3.h>
 #include <glm.hpp>
 
+#include <unordered_map>
+
 namespace framework {
 
 class GlManager {
@@ -11,6 +13,12 @@ class GlManager {
   static const int kHeight = 768;
   static const int kMajorVersion = 2;
   static const int kMinorVersion = 1;
+
+ public:
+  enum BackgroundColors {
+    kWhite,
+    kDarkBlue,
+  };
 
  public:
   GlManager() = default;
@@ -50,9 +58,26 @@ class GlManager {
            glfwWindowShouldClose(window_) != 0;
   }
 
+  void EnableBlending() const {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  }
+
+  void SetBackgroundColor(BackgroundColors color) const {
+    switch (color) {
+      case kWhite:
+        glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+        break;
+      case kDarkBlue:
+        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+        break;
+    }
+  }
+
  private:
   GLFWwindow* window_ = nullptr;
   bool glfw_initialised_ = false;
+
 };
 
 }  // namespace framework

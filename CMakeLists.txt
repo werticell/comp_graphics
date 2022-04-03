@@ -26,8 +26,10 @@ add_library(GLSupport
 
 link_libraries(${OPENGL} ${GLEW_LINK} ${GLFW_LINK} GLSupport)
 
-
+# Make support library includes visible to Tasks
 include_directories(support)
+
+
 # Tasks subdirectories
 add_subdirectory(Task1)
 
