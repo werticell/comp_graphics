@@ -51,7 +51,6 @@ int main() {
   glBufferData(GL_ARRAY_BUFFER, sizeof(kVertexBufferData), kVertexBufferData,
                GL_STATIC_DRAW);
 
-
   // Model matrix. For both triangles is the same - models remain unchanged.
   glm::mat4 model = glm::mat4(1.0f);
 
@@ -69,22 +68,24 @@ int main() {
   glm::mat4 mvp;
 
   // Will be rotated along x and z axis.
-  // glm::vec4 current_camera_pos = glm::vec4(0, 0, -1, 1);
-
-  float radius = 4;
+  glm::vec4 current_camera_pos = glm::vec4(0, 0, -4, 1);
+  // Matrix that rotates the camera.
+  glm::mat4 rotation_matrix =
+      glm::rotate(glm::mat4(1.0f),      // Identity matrix
+                  0.03f,                // Angle in radians
+                  glm::vec3(0, 1, 0));  // Axis of rotation
 
   while (!manager.ShouldQuit()) {
     // Clear the screen.
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Find current View matrix.
-    float camera_cur_x = sin(glfwGetTime()) * radius;
-    float camera_cur_z = cos(glfwGetTime()) * radius;
+    // Rotate camera a bit.
+    current_camera_pos = rotation_matrix * current_camera_pos;
 
-    view = glm::lookAt(
-        glm::vec3(camera_cur_x, 0, camera_cur_z), // Position in world.
-        glm::vec3(0, 0, 0), // Point to look at.
-        glm::vec3(0, 1, 0) // Up head direction.
+    // Find current View matrix.
+    view = glm::lookAt(glm::vec3(current_camera_pos),  // Position in world.
+                       glm::vec3(0, 0, 0),             // Point to look at.
+                       glm::vec3(0, 1, 0)              // Up head direction.
     );
 
     mvp = projection * view * model;
@@ -117,4 +118,3 @@ int main() {
 
   return 0;
 }
-
