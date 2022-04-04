@@ -37,11 +37,8 @@ int main() {
       0.0f, 0.2f, 0.0f,
   };
 
-  GLuint vertex_buffer;
-  glGenBuffers(1, &vertex_buffer);
-  glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(kVertexBufferData), kVertexBufferData,
-               GL_STATIC_DRAW);
+  GLuint vertex_buffer = manager.MakeStaticDrawBuffer(
+      kVertexBufferData, sizeof(kVertexBufferData));
 
   // Wait for ESC to be pressed
   while (!manager.ShouldQuit()) {
@@ -67,9 +64,7 @@ int main() {
     glfwSwapBuffers(manager.GetWindow());
     glfwPollEvents();
   }
-
-  // Cleanup VBO
-  glDeleteBuffers(1, &vertex_buffer);
+  
   glDeleteProgram(program_id1);
   glDeleteProgram(program_id2);
 
