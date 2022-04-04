@@ -5,6 +5,7 @@
 #include <glm.hpp>
 
 #include <string>
+#include <vector>
 
 namespace framework {
 
@@ -26,6 +27,7 @@ class GlManager {
     if (glfw_initialised_) {
       glfwTerminate();
     }
+    ClearBuffers();
   }
 
   bool InitialiseGLFW() {
@@ -66,9 +68,30 @@ class GlManager {
     glDepthFunc(GL_LESS);
   }
 
+  GLuint MakeStaticDrawBuffer(const float data[], size_t data_size) {
+    GLuint handler;
+    glGenBuffers(1, &handler);
+    glBindBuffer(GL_ARRAY_BUFFER, handler);
+    glBufferData(GL_ARRAY_BUFFER, data_size, data, GL_STATIC_DRAW);
+    buffer_handlers_.push_back(handler);
+    return handler;
+  }
+
+ private:
+  void ClearBuffers() {
+    while (!buffer_handlers_.empty()) {
+      GLuint handler = buffer_handlers_.back();
+      buffer_handlers_.pop_back();
+      glDeleteBuffers(1, &handler);
+    }
+
+  }
+
  private:
   GLFWwindow* window_ = nullptr;
   bool glfw_initialised_ = false;
+
+  std::vector<GLuint> buffer_handlers_;
 };
 
 }  // namespace framework
