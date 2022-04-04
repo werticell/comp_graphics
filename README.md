@@ -4,18 +4,20 @@ OpenGL tasks on computer graphics course.
 
 
 ------------------------
-## Task1
+## Task 1
 Two intersecting triangles with different fragment shaders.
 ![tag1](Task1/imgs/result.png "Static triangles")
 
 
 --------------------------
-## Task2
+## Task 2
 Camera rotation for triangles from previous tasks.
-![tag2](Task2/imgs/result.gif "Static triangles")
+![tag2](Task2/imgs/result.gif "Moving triangles")
 
-
-
+--------------------------
+## Task 3
+Sims octahedron.
+![tag2](Task3/imgs/result.gif "Octahedron")
 
 
 -------------------------
