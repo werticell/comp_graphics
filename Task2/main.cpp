@@ -4,7 +4,6 @@
 
 #include <gtc/matrix_transform.hpp>
 
-#include <shader_loader.hpp>
 #include <gl_manager.hpp>
 
 #include <iostream>
@@ -24,11 +23,11 @@ int main() {
   manager.SetBackgroundColor(Colors::kWhite);
   manager.EnableBlending();
 
-  // Create and compile our GLSL programs from the shaders.
+  // Compile GLSL programs from the sources.
   GLuint program_id1 =
-      framework::LoadShaders("vertex_shader.glsl", "fragment_shader1.glsl");
+      manager.LoadShaders("vertex_shader.glsl", "fragment_shader1.glsl");
   GLuint program_id2 =
-      framework::LoadShaders("vertex_shader.glsl", "fragment_shader2.glsl");
+      manager.LoadShaders("vertex_shader.glsl", "fragment_shader2.glsl");
 
   // Get handles to MVP variable in shader.
   GLuint mvp_matrix1 = glGetUniformLocation(program_id1, "MVP");
@@ -55,9 +54,9 @@ int main() {
   glm::mat4 view;
 
   // Projection matrix.
-  // Field of view - 45deg
-  // Ratio - 4:3 for 1024:768 window
-  // Range - 0.1 Unit -> 100 Unit
+  // Field of view - 45deg.
+  // Ratio - 4:3 for 1024:768 window.
+  // Range - 0.1 Unit -> 100 Unit.
   glm::mat4 projection =
       glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 
@@ -87,7 +86,7 @@ int main() {
 
     mvp = projection * view * model;
 
-    // 1-st attribute buffer : vertices.
+    // 1-st attribute buffer - vertices.
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
@@ -107,9 +106,6 @@ int main() {
     glfwSwapBuffers(manager.GetWindow());
     glfwPollEvents();
   }
-
-  glDeleteProgram(program_id1);
-  glDeleteProgram(program_id2);
 
   return 0;
 }

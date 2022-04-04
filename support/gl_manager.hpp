@@ -4,11 +4,15 @@
 #include <glfw3.h>
 #include <glm.hpp>
 
+#include "shader_loader.hpp"
+
 #include <string>
 #include <vector>
 
 namespace framework {
 
+// Manages resources of the OpenGL program.
+// On destruction cleans up everything in the program.
 class GlManager {
   static const int kWidth = 1024;
   static const int kHeight = 768;
@@ -28,6 +32,7 @@ class GlManager {
       glfwTerminate();
     }
     ClearBuffers();
+    DeletePrograms();
   }
 
   bool InitialiseGLFW() {
@@ -77,6 +82,14 @@ class GlManager {
     return handler;
   }
 
+  GLuint LoadShaders(const char* vertex_file_path,
+                     const char* fragment_file_path) {
+    GLuint program_id =
+        framework::LoadShaders(vertex_file_path, fragment_file_path);
+    program_handlers_.push_back(program_id);
+    return program_id;
+  }
+
  private:
   void ClearBuffers() {
     while (!buffer_handlers_.empty()) {
@@ -84,7 +97,14 @@ class GlManager {
       buffer_handlers_.pop_back();
       glDeleteBuffers(1, &handler);
     }
+  }
 
+  void DeletePrograms() {
+    while (!program_handlers_.empty()) {
+      GLuint handler = program_handlers_.back();
+      program_handlers_.pop_back();
+      glDeleteProgram(handler);
+    }
   }
 
  private:
@@ -92,6 +112,7 @@ class GlManager {
   bool glfw_initialised_ = false;
 
   std::vector<GLuint> buffer_handlers_;
+  std::vector<GLuint> program_handlers_;
 };
 
 }  // namespace framework

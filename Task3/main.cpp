@@ -5,7 +5,6 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 
-#include <shader_loader.hpp>
 #include <gl_manager.hpp>
 
 #include <iostream>
@@ -26,17 +25,17 @@ int main() {
   manager.EnableBlending();
   manager.EnableLessDepthTest();
 
-  // Create and compile our GLSL programs from the shaders.
+  // Compile GLSL programs from the sources.
   GLuint program_id =
-      framework::LoadShaders("vertex_shader.glsl", "fragment_shader.glsl");
+      manager.LoadShaders("vertex_shader.glsl", "fragment_shader.glsl");
 
   // Get handles to MVP variable in shader.
   GLuint mvp_matrix = glGetUniformLocation(program_id, "MVP");
 
   GLuint vertex_buffer = manager.MakeStaticDrawBuffer(
       kVertexBufferData, sizeof(kVertexBufferData));
-  GLuint color_buffer = manager.MakeStaticDrawBuffer(
-      kColorBufferData, sizeof(kColorBufferData));
+  GLuint color_buffer =
+      manager.MakeStaticDrawBuffer(kColorBufferData, sizeof(kColorBufferData));
 
   // Model matrix. For both triangles is the same - models remain unchanged.
   glm::mat4 model = glm::mat4(1.0f);
@@ -100,6 +99,5 @@ int main() {
     glfwPollEvents();
   }
 
-  glDeleteProgram(program_id);
   return 0;
 }
