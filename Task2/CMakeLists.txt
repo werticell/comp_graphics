@@ -1,6 +1,4 @@
-add_executable(Task2
-    main.cpp
-)
+add_executable(Task2 main.cpp)
 
 # Outputs executable to current @Task_n/bin directory
 set_target_properties(Task2
