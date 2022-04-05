@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glew.h>
+#include <GL/glew.h>
 
 // Octahedron - 8 triangles
 static const GLfloat kVertexBufferData[] = {

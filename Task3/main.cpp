@@ -1,9 +1,9 @@
 #include "vertex_buffer_data.hpp"
 
-#include <glew.h>
-#include <glfw3.h>
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <gl_manager.hpp>
 
