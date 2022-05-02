@@ -1,8 +1,6 @@
-//
-// Created by Mikhail on 02.05.2022.
-//
+#pragma once
 
-#ifndef COMPUTER_GRAPHICS_SUPPORT_CONTROLS_HPP_
-#define COMPUTER_GRAPHICS_SUPPORT_CONTROLS_HPP_
-
-#endif //COMPUTER_GRAPHICS_SUPPORT_CONTROLS_HPP_
+vec3 get_position();
+void computeMatricesFromInputs();
+glm::mat4 getViewMatrix();
+glm::mat4 getProjectionMatrix();

@@ -1,8 +1,9 @@
-//
-// Created by Mikhail on 02.05.2022.
-//
+#pragma once
 
-#ifndef COMPUTER_GRAPHICS_SUPPORT_OBJLOADER_HPP_
-#define COMPUTER_GRAPHICS_SUPPORT_OBJLOADER_HPP_
+bool loadOBJ(const char* path, std::vector<glm::vec3>& out_vertices,
+             std::vector<glm::vec2>& out_uvs,
+             std::vector<glm::vec3>& out_normals);
 
-#endif //COMPUTER_GRAPHICS_SUPPORT_OBJLOADER_HPP_
+bool loadAssImp(const char* path, std::vector<unsigned short>& indices,
+                std::vector<glm::vec3>& vertices, std::vector<glm::vec2>& uvs,
+                std::vector<glm::vec3>& normals);

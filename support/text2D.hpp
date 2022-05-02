@@ -1,8 +1,6 @@
-//
-// Created by Mikhail on 02.05.2022.
-//
+#pragma once
 
-#ifndef COMPUTER_GRAPHICS_SUPPORT_TEXT2D_HPP_
-#define COMPUTER_GRAPHICS_SUPPORT_TEXT2D_HPP_
 
-#endif //COMPUTER_GRAPHICS_SUPPORT_TEXT2D_HPP_
+void initText2D(const char * texturePath);
+void printText2D(const char * text, int x, int y, int size);
+void cleanupText2D();
