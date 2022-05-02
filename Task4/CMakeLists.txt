@@ -13,18 +13,13 @@ add_custom_target(DeleteGlslFiles
 )
 
 # Copies all shaders from contents of shader folder to a @Task_n/bin directory
-add_custom_target(CopyFragmentShaders
-    COMMAND bash -c "cp -r ${CMAKE_CURRENT_SOURCE_DIR}/shaders/*.fragmentshader ${CMAKE_CURRENT_SOURCE_DIR}/bin/"
+add_custom_target(CopyGlslShaders
+    COMMAND bash -c "cp -r ${CMAKE_CURRENT_SOURCE_DIR}/shaders/*.glsl ${CMAKE_CURRENT_SOURCE_DIR}/bin/"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_custom_target(CopyVertexShaders
-    COMMAND bash -c "cp -r ${CMAKE_CURRENT_SOURCE_DIR}/shaders/*.vertexshader ${CMAKE_CURRENT_SOURCE_DIR}/bin/"
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-add_dependencies(CopyVertexShaders Task4)
-add_dependencies(CopyFragmentShaders Task4)
-add_dependencies(DeleteGlslFiles Task4)
+add_dependencies(Task4 CopyGlslShaders)
+add_dependencies(Task4 DeleteGlslFiles)
 
 if (APPLE)
   target_link_libraries(Task4 "-framework OpenGL")

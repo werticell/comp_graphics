@@ -7,7 +7,5 @@ varying vec2 UV;
 uniform sampler2D myTextureSampler;
 
 void main(){
-
-	// Output color = color of the texture at the specified UV
-	gl_FragColor = texture2D( myTextureSampler, UV );
+    gl_FragColor = texture2D(myTextureSampler, UV);
 }
