@@ -7,7 +7,7 @@ set_target_properties(Task4
 )
 
 # Deletes all shader files with .glsl extension from previous runs
-add_custom_target(CopyGlslFiles
+add_custom_target(DeleteGlslFiles
     COMMAND bash -c "rm ${CMAKE_CURRENT_SOURCE_DIR}/bin/*.glsl"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -24,7 +24,7 @@ add_custom_target(CopyVertexShaders
 )
 add_dependencies(CopyVertexShaders Task4)
 add_dependencies(CopyFragmentShaders Task4)
-add_dependencies(CopyGlslFiles Task4)
+add_dependencies(DeleteGlslFiles Task4)
 
 if (APPLE)
   target_link_libraries(Task4 "-framework OpenGL")
