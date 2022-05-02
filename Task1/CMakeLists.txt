@@ -7,16 +7,21 @@ set_target_properties(Task1
 )
 
 # Deletes all shader files with .glsl extension from previous runs
-execute_process(
+add_custom_target(DeleteGlslFilesTask1
     COMMAND bash -c "rm ${CMAKE_CURRENT_SOURCE_DIR}/bin/*.glsl"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # Copies all shaders from contents of shader folder to a @Task_n/bin directory
-execute_process(
+add_custom_target(CopyGlslFilesTask1
     COMMAND bash -c "cp -r ${CMAKE_CURRENT_SOURCE_DIR}/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/bin/"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(Task1 "-framework OpenGL")
-target_link_libraries(Task1 "-framework GLUT")
+add_dependencies(DeleteGlslFilesTask1 Task1)
+add_dependencies(CopyGlslFilesTask1 Task1)
+
+if (APPLE)
+  target_link_libraries(Task1 "-framework OpenGL")
+  target_link_libraries(Task1 "-framework GLUT")
+endif()

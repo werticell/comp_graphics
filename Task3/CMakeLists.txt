@@ -18,5 +18,7 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(Task3 "-framework OpenGL")
-target_link_libraries(Task3 "-framework GLUT")
+if (APPLE)
+  target_link_libraries(Task3 "-framework OpenGL")
+  target_link_libraries(Task3 "-framework GLUT")
+endif()
