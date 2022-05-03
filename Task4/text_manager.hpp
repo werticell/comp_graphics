@@ -1,8 +1,19 @@
-//
-// Created by Mikhail on 03.05.2022.
-//
+#pragma once
 
-#ifndef COMPUTER_GRAPHICS_TASK4_TEXT_MANAGER_HPP_
-#define COMPUTER_GRAPHICS_TASK4_TEXT_MANAGER_HPP_
+class TextManager {
+ public:
+  TextManager(const char * path) {
+    initText2D(path);
+  }
 
-#endif //COMPUTER_GRAPHICS_TASK4_TEXT_MANAGER_HPP_
+  ~TextManager() {
+    // Delete the text's VBO, the shader and the texture
+    cleanupText2D();
+  }
+
+  void Display(uint64_t number) {
+    std::string fireballs("Doggos fed: " + std::to_string(number));
+    printText2D(fireballs.data(), 0, 550, 25);
+  }
+
+};

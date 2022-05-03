@@ -24,6 +24,7 @@ class GlManager {
     kWhite,
     kDarkBlue,
     kGrey,
+    kLightBlue,
   };
 
  public:

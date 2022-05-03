@@ -7,8 +7,8 @@ class GameManager {
   static inline const int kMaxDistance = 30;
   static inline const int kEnemiesCountOnStart = 5;
   static inline const int kMaxEnemiesCount = 20;
-  static inline const double kEnemyDelay = 2.0;
-  static inline const double kFireballDelay = 0.1;
+  static inline const double kDoggoSpawnDelay = 2.0;
+  static inline const double kBoneDelay = 0.5;
 
  public:
   void SetupWithDoggos() {
@@ -54,7 +54,7 @@ class GameManager {
 
   void TryToAddDoggo() {
     double cur_time = glfwGetTime();
-    if (cur_time - last_doggo_time_ > kEnemyDelay) {
+    if (cur_time - last_doggo_time_ > kDoggoSpawnDelay) {
       last_doggo_time_ = cur_time;
       if (doggos_count_ < kMaxEnemiesCount) {
         CreateNewDoggo();
@@ -64,7 +64,7 @@ class GameManager {
 
   void TryToThrowABone() {
     double cur_time = glfwGetTime();
-    if (cur_time - last_bone_time_ > kFireballDelay) {
+    if (cur_time - last_bone_time_ > kBoneDelay) {
       last_bone_time_ = cur_time;
       ThrowABone();
     }

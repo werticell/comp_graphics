@@ -35,7 +35,7 @@ int main() {
   }
 
   manager.CheckEscKey();
-  manager.SetBackgroundColor(Colors::kGrey);
+  manager.SetBackgroundColor(Colors::kLightBlue);
   manager.EnableLessDepthTest();
   manager.SetupCursor();
   glEnable(GL_CULL_FACE);
@@ -54,23 +54,24 @@ int main() {
   GLuint model_matrix_id = glGetUniformLocation(program_id, "M");
 
   // Load textures for doggos and bones.
-  GLuint bone_texture = loadDDS("PutYourBoneTexture.DDS");    // TODO
-  GLuint doggo_texture = loadDDS("PutYourDoggoTexture.DDS");  // TODO
+  GLuint bone_texture = loadDDS();   // TODO
+  GLuint doggo_texture = loadDDS();  // TODO
 
   // Get a handle for our "myTextureSampler" variable from shader.
   GLuint texture_id = glGetUniformLocation(program_id, "myTextureSampler");
 
   // Read our obj files to set default vertices of our objects.
-  Doggo::LoadDoggoObj("PlaceYourDoggoHere.obj");  // TODO
-  Bone::LoadBoneObj("PlaceYouBoneHere.obj");      // TODO
+  Doggo::LoadDoggoObj(".obj");  // TODO
+  Bone::LoadBoneObj(".obj");    // TODO
 
   // Spawn starting enemies.
   game_manager.SetupWithDoggos();
 
   glUseProgram(program_id);
-  GLuint light_id = glGetUniformLocation(program_id, "LightPosition_worldspace");
+  GLuint light_id =
+      glGetUniformLocation(program_id, "LightPosition_worldspace");
 
-
+  TextManager text_manager("Holstein.DDS");
 
   manager.SetMouseButtonCallback(MouseButtonCallback);
   while (!manager.ShouldQuit()) {
@@ -109,11 +110,13 @@ int main() {
     game_manager.MakeContiguous();
 
     // Load all data into VBO.
-    GLuint vertex_buffer = manager.MakeStaticDrawBuffer(game_manager.GetAllVertices());
+    GLuint vertex_buffer =
+        manager.MakeStaticDrawBuffer(game_manager.GetAllVertices());
 
     GLuint uv_buffer = manager.MakeStaticDrawBuffer(game_manager.GetAllUvs());
 
-    GLuint normal_buffer = manager.MakeStaticDrawBuffer(game_manager.GetAllNormals());
+    GLuint normal_buffer =
+        manager.MakeStaticDrawBuffer(game_manager.GetAllNormals());
 
     // 1-st attribute buffer - vertices.
     glEnableVertexAttribArray(0);
@@ -136,6 +139,7 @@ int main() {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 
+    text_manager.Display(game_manager.GetDoggosFedCount());
 
     // Swap buffers
     glfwSwapBuffers(manager.GetWindow());

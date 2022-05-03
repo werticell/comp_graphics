@@ -23,6 +23,9 @@ void GlManager::SetBackgroundColor(BackgroundColors color) const {
     case kGrey:
       glClearColor(0.1f, 0.1f, 0.1f, 0);
       break;
+    case kLightBlue:
+      glClearColor(0.403f, 0.498f, 0.878f, 0);
+      break;
   }
 }
 
