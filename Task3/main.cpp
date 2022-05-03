@@ -9,10 +9,10 @@
 
 #include <iostream>
 
-using Colors = framework::GlManager::BackgroundColors;
+using Colors = support::GlManager::BackgroundColors;
 
 int main() {
-  framework::GlManager manager;
+  support::GlManager manager;
 
   if (!manager.InitialiseGLFW() || !manager.MakeWindow("Task3") ||
       !manager.InitialiseGLEW()) {

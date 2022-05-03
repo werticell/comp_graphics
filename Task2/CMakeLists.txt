@@ -18,8 +18,8 @@ add_custom_target(CopyGlslFilesTask2
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_dependencies(DeleteGlslFilesTask2 Task2)
-add_dependencies(CopyGlslFilesTask2 Task2)
+add_dependencies(Task2 DeleteGlslFilesTask2)
+add_dependencies(Task2 CopyGlslFilesTask2)
 
 if (APPLE)
   target_link_libraries(Task2 "-framework OpenGL")
