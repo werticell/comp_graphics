@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace framework {
+namespace support {
 
 // Manages resources of the OpenGL program.
 // On destruction cleans up everything in the program.
@@ -23,6 +23,7 @@ class GlManager {
   enum BackgroundColors {
     kWhite,
     kDarkBlue,
+    kGrey,
   };
 
  public:
@@ -73,6 +74,22 @@ class GlManager {
     glDepthFunc(GL_LESS);
   }
 
+  void SetupCursor() const {
+    // Hide the mouse and enable unlimited movement
+    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // Set the mouse at the center of the screen
+    glfwPollEvents();
+    glfwSetCursorPos(window_, kWidth / 2, kHeight / 2);
+  }
+
+  void SetMouseButtonCallback(GLFWmousebuttonfun callback) {
+    glfwSetMouseButtonCallback(window_, callback);
+  }
+
+  bool IsPressed(int button) {
+    return GLFW_PRESS == glfwGetMouseButton(window_, button);
+  }
+
   GLuint MakeStaticDrawBuffer(const float data[], size_t data_size) {
     GLuint handler;
     glGenBuffers(1, &handler);
@@ -82,10 +99,21 @@ class GlManager {
     return handler;
   }
 
+  template <typename T>
+  GLuint MakeStaticDrawBuffer(std::vector<T>& data) {
+    GLuint handler;
+    glGenBuffers(1, &handler);
+    glBindBuffer(GL_ARRAY_BUFFER, handler);
+    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(glm::vec3), &data[0],
+                 GL_STATIC_DRAW);
+    buffer_handlers_.push_back(handler);
+    return handler;
+  }
+
   GLuint LoadShaders(const char* vertex_file_path,
                      const char* fragment_file_path) {
     GLuint program_id =
-        framework::LoadShaders(vertex_file_path, fragment_file_path);
+        support::LoadShaders(vertex_file_path, fragment_file_path);
     program_handlers_.push_back(program_id);
     return program_id;
   }
@@ -106,6 +134,7 @@ class GlManager {
       glDeleteProgram(handler);
     }
   }
+
 
  private:
   GLFWwindow* window_ = nullptr;

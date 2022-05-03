@@ -1,6 +1,6 @@
 #include "shader_loader.hpp"
 
-namespace framework {
+namespace support {
 
 namespace detail {
 

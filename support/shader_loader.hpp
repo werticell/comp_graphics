@@ -9,7 +9,7 @@
 #include <fstream>
 #include <vector>
 
-namespace framework {
+namespace support {
 
 namespace detail {
 std::string ReadFile(const char* filepath);

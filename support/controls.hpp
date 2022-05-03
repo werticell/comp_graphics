@@ -1,6 +1,8 @@
 #pragma once
 
-vec3 get_position();
-void computeMatricesFromInputs();
-glm::mat4 getViewMatrix();
-glm::mat4 getProjectionMatrix();
+#include <glm/glm.hpp>
+
+glm::vec3 GetPosition();
+void ComputeMatricesFromInputs(GLFWwindow* window);
+glm::mat4 GetViewMatrix();
+glm::mat4 GetProjectionMatrix();
