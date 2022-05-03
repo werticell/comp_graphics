@@ -10,7 +10,7 @@ class Bone {
       : vertices_(fireball_obj_vertices),
         uvs_(fireball_obj_uvs),
         normals_(fireball_obj_normals) {
-    glm::vec3 cur_position = GetPosition();
+    glm::vec3 cur_position = support::GetPosition();
 
     glm::vec3 offset = glm::normalize(current_look_at) * 2.0f;
     offset[2] *= -1.0f;

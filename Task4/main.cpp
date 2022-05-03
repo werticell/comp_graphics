@@ -53,7 +53,7 @@ int main() {
 
   // Load textures for doggos and bones.
 //  GLuint bone_texture = loadDDS("water.DDS");   // TODO
-  GLuint doggo_texture = loadBMP_custom("doggo_texture.bmp");
+  GLuint doggo_texture = support::LoadBmp("doggo_texture.bmp");
 
   // Get a handle for our "myTextureSampler" variable from shader.
   GLuint texture_id = glGetUniformLocation(program_id, "myTextureSampler");
@@ -77,9 +77,9 @@ int main() {
     glUseProgram(program_id);
 
     // Compute the MVP matrix from keyboard and mouse input.
-    ComputeMatricesFromInputs(manager.GetWindow());
-    glm::mat4 projection_matrix = GetProjectionMatrix();
-    glm::mat4 view_matrix = GetViewMatrix();
+    support::ComputeMatricesFromInputs(manager.GetWindow());
+    glm::mat4 projection_matrix = support::GetProjectionMatrix();
+    glm::mat4 view_matrix = support::GetViewMatrix();
     glm::mat4 model_matrix = glm::mat4(1.0);
     glm::mat4 mvp = projection_matrix * view_matrix * model_matrix;
 

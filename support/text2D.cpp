@@ -24,7 +24,7 @@ unsigned int Text2DUniformID;  // Location of the program's texture attribute
 void InitText2D(const char* texture_path, const char* text_vertex_shader,
                 const char* text_fragment_shader) {
   // Initialize texture
-  Text2DTextureID = loadDDS(texture_path);
+  Text2DTextureID = LoadDds(texture_path);
 
   // Initialize VBO
   glGenBuffers(1, &Text2DVertexBufferID);
