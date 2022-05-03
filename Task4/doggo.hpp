@@ -2,6 +2,9 @@
 
 #include <glm/glm.hpp>
 
+
+#include <objloader.hpp>
+
 class Doggo {
  public:
   Doggo()
@@ -22,7 +25,7 @@ class Doggo {
   }
 
   static void LoadDoggoObj(const char* filepath) {
-    loadOBJ(filepath, default_enemy_vertices, default_enemy_uvs,
+    support::LoadObj(filepath, default_enemy_vertices, default_enemy_uvs,
             default_enemy_normals);
   }
 

@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include <objloader.hpp>
+
 class Bone {
  public:
   Bone(const glm::vec3& current_look_at)
@@ -36,8 +38,8 @@ class Bone {
   }
 
   static void LoadBoneObj(const char* filepath) {
-    loadOBJ(filepath, fireball_obj_vertices, fireball_obj_uvs,
-            fireball_obj_normals);
+    support::LoadObj(filepath, fireball_obj_vertices, fireball_obj_uvs,
+                     fireball_obj_normals);
     RotateFireballObj();
   }
 

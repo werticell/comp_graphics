@@ -8,8 +8,6 @@
 
 #include <texture_loader.hpp>
 #include <controls.hpp>
-#include <objloader.hpp>
-#include <text2D.hpp>
 
 #include "game_manager.hpp"
 #include "gl_manager.hpp"
@@ -71,7 +69,7 @@ int main() {
   GLuint light_id =
       glGetUniformLocation(program_id, "LightPosition_worldspace");
 
-  TextManager text_manager("Holstein.DDS");
+  TextManager text_manager("Holstein.DDS", "TextVertexShader.glsl", "TextFragmentShader.glsl");
 
   manager.SetMouseButtonCallback(MouseButtonCallback);
   while (!manager.ShouldQuit()) {

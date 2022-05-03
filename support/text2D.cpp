@@ -2,15 +2,14 @@
 #include <cstring>
 
 #include <GL/glew.h>
-
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-using namespace glm;
 
 #include "shader_loader.hpp"
 #include "texture_loader.hpp"
 
 #include "text2D.hpp"
+
+namespace support {
 
 unsigned int Text2DTextureID;       // Texture containing the font
 unsigned int Text2DVertexBufferID;  // Buffer containing the vertices
@@ -18,13 +17,14 @@ unsigned int Text2DUVBufferID;      //                       UVs
 unsigned int Text2DShaderID;        // Program used to disaply the text
 unsigned int vertexPosition_screenspaceID;
 // Location of the program's
-                                   // "vertexPosition_screenspace" attribute
+// "vertexPosition_screenspace" attribute
 unsigned int vertexUVID;       // Location of the program's "vertexUV" attribute
 unsigned int Text2DUniformID;  // Location of the program's texture attribute
 
-void initText2D(const char* texturePath) {
+void InitText2D(const char* texture_path, const char* text_vertex_shader,
+                const char* text_fragment_shader) {
   // Initialize texture
-  Text2DTextureID = loadDDS(texturePath);
+  Text2DTextureID = loadDDS(texture_path);
 
   // Initialize VBO
   glGenBuffers(1, &Text2DVertexBufferID);
@@ -43,7 +43,7 @@ void initText2D(const char* texturePath) {
   Text2DUniformID = glGetUniformLocation(Text2DShaderID, "myTextureSampler");
 }
 
-void printText2D(const char* text, int x, int y, int size) {
+void PrintText2D(const char* text, int x, int y, int size) {
   unsigned int length = strlen(text);
 
   // Fill buffers
@@ -100,12 +100,12 @@ void printText2D(const char* text, int x, int y, int size) {
   glEnableVertexAttribArray(vertexPosition_screenspaceID);
   glBindBuffer(GL_ARRAY_BUFFER, Text2DVertexBufferID);
   glVertexAttribPointer(vertexPosition_screenspaceID, 2, GL_FLOAT, GL_FALSE, 0,
-                        (void*)0);
+                        nullptr);
 
   // 2nd attribute buffer : UVs
   glEnableVertexAttribArray(vertexUVID);
   glBindBuffer(GL_ARRAY_BUFFER, Text2DUVBufferID);
-  glVertexAttribPointer(vertexUVID, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+  glVertexAttribPointer(vertexUVID, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -119,7 +119,7 @@ void printText2D(const char* text, int x, int y, int size) {
   glDisableVertexAttribArray(vertexUVID);
 }
 
-void cleanupText2D() {
+void CleanupText2D() {
   // Delete buffers
   glDeleteBuffers(1, &Text2DVertexBufferID);
   glDeleteBuffers(1, &Text2DUVBufferID);
@@ -130,3 +130,4 @@ void cleanupText2D() {
   // Delete shader
   glDeleteProgram(Text2DShaderID);
 }
+}  // namespace support

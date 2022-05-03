@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include "bone.hpp"
 #include "doggo.hpp"
 
@@ -15,20 +17,16 @@ class GameManager {
     for (size_t i = 0; i < kEnemiesCountOnStart; ++i) {
       CreateNewDoggo();
     }
-    MakeContiguous();
   }
 
   void UpdateBonesLocation() {
-    for (int k = 0; k < bones_.size(); ++k) {
-      if (length(bones_[k].current_center) > kMaxDistance) {
-        RemoveBone(k);
-        --k;
-      }
-    }
+    std::remove_if(bones_.begin(), bones_.end(), [](const Bone& bone) {
+      return glm::length(bone.current_center) > kMaxDistance;
+    });
 
-    for (int k = 0; k < bones_.size(); ++k) {
-      bones_[k].UpdateLocation();
-    }
+    std::for_each(bones_.begin(), bones_.end(), [](Bone& bone) {
+      bone.UpdateLocation();
+    });
     CheckCollisions();
   }
 
@@ -72,8 +70,7 @@ class GameManager {
 
   void ThrowABone() {
     ++bones_count_;
-    Bone new_ball(cur_look_at_);
-    bones_.push_back(new_ball);
+    bones_.emplace_back(cur_look_at_);
   }
 
   void SetCurrentLookAt(glm::vec3 other) {
@@ -100,30 +97,32 @@ class GameManager {
 
  private:
   void CreateNewDoggo() {
-    Doggo new_enemy;
-    doggos_.push_back(new_enemy);
+    if (doggos_count_ + 1 >= kMaxEnemiesCount) {
+      return;
+    }
+    doggos_.emplace_back(Doggo{});
     ++doggos_count_;
   }
 
-  void RemoveDoggo(int k) {
+  void RemoveDoggo(size_t k) {
     doggos_.erase(doggos_.begin() + k);
     --doggos_count_;
   }
 
-  void RemoveBone(int k) {
+  void RemoveBone(size_t k) {
     bones_.erase(bones_.begin() + k);
+    --bones_count_;
   }
 
   void CheckCollisions() {
-    for (int f = 0; f < bones_.size(); ++f) {
-      for (int e = 0; e < doggos_.size(); ++e) {
-        if (distance(bones_[f].current_center, doggos_[e].current_center) <
-            bones_[f].kDistanceToCollide + doggos_[e].kDistanceToCollide) {
+    for (size_t i = 0; i < bones_.size(); ++i) {
+      for (size_t j = 0; j < doggos_.size(); ++j) {
+        if (glm::distance(bones_[i].current_center, doggos_[j].current_center) <
+            Bone::kDistanceToCollide + Doggo::kDistanceToCollide) {
           ++doggo_fed_;
-          RemoveDoggo(e);
-          RemoveBone(f);
-          CreateNewDoggo();
-          --f;
+          RemoveBone(i);
+          RemoveDoggo(j);
+          --i;
           break;
         }
       }
