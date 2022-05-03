@@ -28,7 +28,7 @@ void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
 int main() {
   support::GlManager manager;
 
-  if (!manager.InitialiseGLFW() || !manager.MakeWindow("Task4") ||
+  if (!manager.InitialiseGLFW() || !manager.MakeWindow("FeedTheDoggo3D") ||
       !manager.InitialiseGLEW()) {
     std::cout << "Failed to initialize. Closing...";
     return 1;
@@ -54,15 +54,15 @@ int main() {
   GLuint model_matrix_id = glGetUniformLocation(program_id, "M");
 
   // Load textures for doggos and bones.
-  GLuint bone_texture = loadDDS();   // TODO
-  GLuint doggo_texture = loadDDS();  // TODO
+//  GLuint bone_texture = loadDDS("water.DDS");   // TODO
+  GLuint doggo_texture = loadBMP_custom("doggo_texture.bmp");
 
   // Get a handle for our "myTextureSampler" variable from shader.
   GLuint texture_id = glGetUniformLocation(program_id, "myTextureSampler");
 
   // Read our obj files to set default vertices of our objects.
-  Doggo::LoadDoggoObj(".obj");  // TODO
-  Bone::LoadBoneObj(".obj");    // TODO
+  Doggo::LoadDoggoObj("doggo.obj");  // TODO
+  Bone::LoadBoneObj("bone.obj");    // TODO
 
   // Spawn starting enemies.
   game_manager.SetupWithDoggos();
@@ -147,7 +147,8 @@ int main() {
   }
 
   // Cleanup VBO and shader
-  glDeleteTextures(1, &bone_texture);
+
+  glDeleteTextures(1, &doggo_texture);
   glDeleteVertexArrays(1, &vertex_array_id);
   return 0;
 }
