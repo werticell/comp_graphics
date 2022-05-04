@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <gl_manager.hpp>
 
 #include "bone.hpp"
 #include "doggo.hpp"
@@ -24,30 +25,19 @@ class GameManager {
       return glm::length(bone.current_center) > kMaxDistance;
     });
 
-    std::for_each(bones_.begin(), bones_.end(), [](Bone& bone) {
-      bone.UpdateLocation();
-    });
+    std::for_each(bones_.begin(), bones_.end(),
+                  [](Bone& bone) { bone.UpdateLocation(); });
     CheckCollisions();
   }
 
-  void MakeContiguous() {
-    all_vertices_.clear();
-    all_uvs_.clear();
-    all_normals_.clear();
-    for (Doggo& doggo : doggos_) {
-      all_vertices_.insert(all_vertices_.end(), doggo.vertices_.begin(),
-                           doggo.vertices_.end());
-      all_normals_.insert(all_normals_.end(), doggo.normals_.begin(),
-                          doggo.normals_.end());
-      all_uvs_.insert(all_uvs_.end(), doggo.uvs_.begin(), doggo.uvs_.end());
-    }
-    for (Bone& bone : bones_) {
-      all_vertices_.insert(all_vertices_.end(), bone.vertices_.begin(),
-                           bone.vertices_.end());
-      all_normals_.insert(all_normals_.end(), bone.normals_.begin(),
-                          bone.normals_.end());
-      all_uvs_.insert(all_uvs_.end(), bone.uvs_.begin(), bone.uvs_.end());
-    }
+  void DrawBones(support::GlManager& manager) {
+    MakeContiguousBones();
+    Draw(manager, bones_vertices_, bones_normals_, bones_uvs_);
+  }
+
+  void DrawDoggos(support::GlManager& manager) {
+    MakeContiguousDoggos();
+    Draw(manager, doggos_vertices_, doggos_normals_, doggos_uvs_);
   }
 
   void TryToAddDoggo() {
@@ -81,18 +71,6 @@ class GameManager {
   //////////////////////////////////////////////////////////////////////////////
   int GetDoggosFedCount() const {
     return doggo_fed_;
-  }
-
-  std::vector<glm::vec3>& GetAllVertices() {
-    return all_vertices_;
-  }
-
-  std::vector<glm::vec3>& GetAllNormals() {
-    return all_normals_;
-  }
-
-  std::vector<glm::vec2>& GetAllUvs() {
-    return all_uvs_;
   }
 
  private:
@@ -129,6 +107,59 @@ class GameManager {
     }
   }
 
+  void MakeContiguousDoggos() {
+    doggos_vertices_.clear();
+    doggos_normals_.clear();
+    doggos_uvs_.clear();
+    for (Doggo& doggo : doggos_) {
+      doggos_vertices_.insert(doggos_vertices_.end(), doggo.vertices_.begin(),
+                              doggo.vertices_.end());
+      doggos_normals_.insert(doggos_normals_.end(), doggo.normals_.begin(),
+                             doggo.normals_.end());
+      doggos_uvs_.insert(doggos_uvs_.end(), doggo.uvs_.begin(),
+                         doggo.uvs_.end());
+    }
+  }
+
+  void MakeContiguousBones() {
+    bones_vertices_.clear();
+    bones_normals_.clear();
+    bones_uvs_.clear();
+    for (Bone& bone : bones_) {
+      bones_vertices_.insert(bones_vertices_.end(), bone.vertices_.begin(),
+                             bone.vertices_.end());
+      bones_normals_.insert(bones_normals_.end(), bone.normals_.begin(),
+                            bone.normals_.end());
+      bones_uvs_.insert(bones_uvs_.end(), bone.uvs_.begin(), bone.uvs_.end());
+    }
+  }
+
+  void Draw(support::GlManager& manager, std::vector<glm::vec3>& vertices,
+            std::vector<glm::vec3>& normals, std::vector<glm::vec2>& uvs) {
+    GLuint vertex_buffer = manager.MakeStaticDrawBuffer(vertices);
+
+    GLuint uv_buffer = manager.MakeStaticDrawBuffer(uvs);
+
+    GLuint normal_buffer = manager.MakeStaticDrawBuffer(normals);
+
+    // 1-st attribute buffer - vertices.
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+    // 2-nd attribute buffer - UVs.
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+    // 3-rd attribute buffer - normals.
+    glEnableVertexAttribArray(2);
+    glBindBuffer(GL_ARRAY_BUFFER, normal_buffer);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+  }
+
  private:
   glm::vec3 cur_look_at_{1.0f, 0.0f, 1.0f};
   std::vector<Bone> bones_;
@@ -137,9 +168,13 @@ class GameManager {
   int64_t doggo_fed_ = 0;
   int64_t doggos_count_ = 0;
 
-  std::vector<glm::vec3> all_vertices_;
-  std::vector<glm::vec3> all_normals_;
-  std::vector<glm::vec2> all_uvs_;
+  std::vector<glm::vec3> doggos_vertices_;
+  std::vector<glm::vec3> doggos_normals_;
+  std::vector<glm::vec2> doggos_uvs_;
+
+  std::vector<glm::vec3> bones_vertices_;
+  std::vector<glm::vec3> bones_normals_;
+  std::vector<glm::vec2> bones_uvs_;
 
   // To make some delay for shooting and spawning new doggos.
   double last_bone_time_ = 0;

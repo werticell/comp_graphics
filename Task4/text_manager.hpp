@@ -15,7 +15,9 @@ class TextManager {
   }
 
   void Display(uint64_t number) {
-    std::string fireballs("Doggos fed: " + std::to_string(number));
-    support::PrintText2D(fireballs.data(), 0, 550, 25);
+    std::string bone("Doggos fed: " + std::to_string(number));
+    support::PrintText2D(bone.data(), 0, 550, 25);
+    std::string cursor("+");
+    support::PrintText2D(cursor.data(), 380, 275, 50);
   }
 };

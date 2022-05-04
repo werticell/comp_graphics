@@ -8,9 +8,9 @@
 class Doggo {
  public:
   Doggo()
-      : vertices_(default_enemy_vertices),
-        uvs_(default_enemy_uvs),
-        normals_(default_enemy_normals) {
+      : vertices_(default_vertices),
+        uvs_(default_uvs),
+        normals_(default_normals) {
     glm::vec3 offset = RandomDoggoPosition(kMinOffset, kMaxOffset);
     current_center += offset;
 
@@ -25,8 +25,7 @@ class Doggo {
   }
 
   static void LoadDoggoObj(const char* filepath) {
-    support::LoadObj(filepath, default_enemy_vertices, default_enemy_uvs,
-            default_enemy_normals);
+    support::LoadObj(filepath, default_vertices, default_uvs, default_normals);
   }
 
  public:
@@ -45,9 +44,9 @@ class Doggo {
   }
 
  private:
-  static inline std::vector<glm::vec3> default_enemy_vertices;
-  static inline std::vector<glm::vec3> default_enemy_normals;
-  static inline std::vector<glm::vec2> default_enemy_uvs;
+  static inline std::vector<glm::vec3> default_vertices;
+  static inline std::vector<glm::vec3> default_normals;
+  static inline std::vector<glm::vec2> default_uvs;
 
   static const inline int64_t kMinOffset = 8;
   static const inline int64_t kMaxOffset = 20;

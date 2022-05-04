@@ -45,11 +45,11 @@ void ComputeMatricesFromInputs(GLFWwindow* window) {
   glfwGetCursorPos(window, &xpos, &ypos);
 
   // Reset mouse position for next frame
-  glfwSetCursorPos(window, 1024 / 2, 768 / 2);
+  glfwSetCursorPos(window, 3000 / 2, 1800 / 2);
 
   // Compute new orientation
-  horizontal_angle += mouse_speed * float(1024 / 2 - xpos);
-  vertical_angle += mouse_speed * float(768 / 2 - ypos);
+  horizontal_angle += mouse_speed * float(3000 / 2 - xpos);
+  vertical_angle += mouse_speed * float(1800 / 2 - ypos);
 
   // Direction : Spherical coordinates to Cartesian coordinates conversion
   glm::vec3 direction(cos(vertical_angle) * sin(horizontal_angle),

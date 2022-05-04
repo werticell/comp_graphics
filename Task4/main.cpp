@@ -52,17 +52,17 @@ int main() {
   GLuint model_matrix_id = glGetUniformLocation(program_id, "M");
 
   // Load textures for doggos and bones.
-//  GLuint bone_texture = loadDDS("water.DDS");   // TODO
-  GLuint doggo_texture = support::LoadBmp("doggo_texture.bmp");
+  GLuint bone_texture = support::LoadDds("bone_texture.dds");
+  GLuint doggo_texture = support::LoadDds("doggo_texture.dds");
 
   // Get a handle for our "myTextureSampler" variable from shader.
   GLuint texture_id = glGetUniformLocation(program_id, "myTextureSampler");
 
   // Read our obj files to set default vertices of our objects.
-  Doggo::LoadDoggoObj("doggo.obj");  // TODO
-  Bone::LoadBoneObj("bone.obj");    // TODO
+  Doggo::LoadDoggoObj("doggo.obj");
+  Bone::LoadBoneObj("bone.obj");
 
-  // Spawn starting enemies.
+  // Spawn starting doggos
   game_manager.SetupWithDoggos();
 
   glUseProgram(program_id);
@@ -97,42 +97,22 @@ int main() {
     glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, &model_matrix[0][0]);
     glUniformMatrix4fv(view_matrix_id, 1, GL_FALSE, &view_matrix[0][0]);
 
-    glm::vec3 light_pos = glm::vec3(0, 10, 0);
+    glm::vec3 light_pos = glm::vec3(0, 7, 0);
     glUniform3f(light_id, light_pos.x, light_pos.y, light_pos.z);
 
-    // Make texture for objects.
+    // Set texture for Doggos.
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, doggo_texture);
     glUniform1i(texture_id, 0);
 
-    game_manager.MakeContiguous();
+    game_manager.DrawDoggos(manager);
 
-    // Load all data into VBO.
-    GLuint vertex_buffer =
-        manager.MakeStaticDrawBuffer(game_manager.GetAllVertices());
+    // Set texture for Bones.
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, bone_texture);
+    glUniform1i(texture_id, 0);
 
-    GLuint uv_buffer = manager.MakeStaticDrawBuffer(game_manager.GetAllUvs());
-
-    GLuint normal_buffer =
-        manager.MakeStaticDrawBuffer(game_manager.GetAllNormals());
-
-    // 1-st attribute buffer - vertices.
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-    // 2-nd attribute buffer - UVs.
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-    // 3-rd attribute buffer - normals.
-    glEnableVertexAttribArray(2);
-    glBindBuffer(GL_ARRAY_BUFFER, normal_buffer);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-    // Draw.
-    glDrawArrays(GL_TRIANGLES, 0, game_manager.GetAllVertices().size());
+    game_manager.DrawBones(manager);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -146,6 +126,7 @@ int main() {
 
   // Cleanup VBO and shader
 
+  glDeleteTextures(1, &bone_texture);
   glDeleteTextures(1, &doggo_texture);
   glDeleteVertexArrays(1, &vertex_array_id);
   return 0;

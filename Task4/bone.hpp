@@ -7,9 +7,9 @@
 class Bone {
  public:
   Bone(const glm::vec3& current_look_at)
-      : vertices_(fireball_obj_vertices),
-        uvs_(fireball_obj_uvs),
-        normals_(fireball_obj_normals) {
+      : vertices_(default_vertices),
+        uvs_(default_uvs),
+        normals_(default_normals) {
     glm::vec3 cur_position = support::GetPosition();
 
     glm::vec3 offset = glm::normalize(current_look_at) * 2.0f;
@@ -26,7 +26,7 @@ class Bone {
       vertex += offset;
     }
     direction = current_center - cur_position;
-    direction[1] = 0;
+    // Make bone slower
     direction *= 0.1f;
   }
 
@@ -38,8 +38,8 @@ class Bone {
   }
 
   static void LoadBoneObj(const char* filepath) {
-    support::LoadObj(filepath, fireball_obj_vertices, fireball_obj_uvs,
-                     fireball_obj_normals);
+    support::LoadObj(filepath, default_vertices, default_uvs,
+                     default_normals);
     RotateFireballObj();
   }
 
@@ -56,7 +56,7 @@ class Bone {
     glm::mat4 trans = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f),
                                   glm::vec3(0.0f, 1.0f, 0.0f));
 
-    for (glm::vec3& vertex : fireball_obj_vertices) {
+    for (glm::vec3& vertex : default_vertices) {
       vertex = glm::vec3(trans * glm::vec4(vertex, 1));
     }
   }
@@ -72,8 +72,8 @@ class Bone {
   }
 
  private:
-  static inline std::vector<glm::vec3> fireball_obj_vertices;
-  static inline std::vector<glm::vec3> fireball_obj_normals;
-  static inline std::vector<glm::vec2> fireball_obj_uvs;
+  static inline std::vector<glm::vec3> default_vertices;
+  static inline std::vector<glm::vec3> default_normals;
+  static inline std::vector<glm::vec2> default_uvs;
   static inline const glm::vec3 kLookAt{0.0f, 0.0f, -1.0f};
 };

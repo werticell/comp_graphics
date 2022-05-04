@@ -14,8 +14,8 @@ namespace support {
 // Manages resources of the OpenGL program.
 // On destruction cleans up everything in the program.
 class GlManager {
-  static const int kWidth = 1024;
-  static const int kHeight = 768;
+  static const int kWidth = 3000;
+  static const int kHeight = 1800;
   static const int kMajorVersion = 2;
   static const int kMinorVersion = 1;
 
