@@ -14,7 +14,7 @@ class GameManager {
   static inline const double kBoneDelay = 0.5;
 
  public:
-  void SetupWithDoggos() {
+  void SetupScene() {
     for (size_t i = 0; i < kEnemiesCountOnStart; ++i) {
       CreateNewDoggo();
     }
@@ -27,7 +27,7 @@ class GameManager {
 
     std::for_each(bones_.begin(), bones_.end(),
                   [](Bone& bone) { bone.UpdateLocation(); });
-    CheckCollisions();
+    TryRemoveCollidedObjects();
   }
 
   void DrawBones(support::GlManager& manager) {
@@ -78,21 +78,22 @@ class GameManager {
     if (doggos_count_ + 1 >= kMaxEnemiesCount) {
       return;
     }
-    doggos_.emplace_back(Doggo{});
+
     ++doggos_count_;
+    doggos_.emplace_back(Doggo{});
   }
 
   void RemoveDoggo(size_t k) {
-    doggos_.erase(doggos_.begin() + k);
     --doggos_count_;
+    doggos_.erase(doggos_.begin() + k);
   }
 
   void RemoveBone(size_t k) {
-    bones_.erase(bones_.begin() + k);
     --bones_count_;
+    bones_.erase(bones_.begin() + k);
   }
 
-  void CheckCollisions() {
+  void TryRemoveCollidedObjects() {
     for (size_t i = 0; i < bones_.size(); ++i) {
       for (size_t j = 0; j < doggos_.size(); ++j) {
         if (glm::distance(bones_[i].current_center, doggos_[j].current_center) <

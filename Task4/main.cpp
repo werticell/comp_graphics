@@ -63,7 +63,7 @@ int main() {
   Bone::LoadBoneObj("bone.obj");
 
   // Spawn starting doggos
-  game_manager.SetupWithDoggos();
+  game_manager.SetupScene();
 
   glUseProgram(program_id);
   GLuint light_id =

@@ -12,10 +12,8 @@
 namespace support {
 
 // Manages resources of the OpenGL program.
-// On destruction cleans up everything in the program.
+// On destruction cleans up mostly everything in the program.
 class GlManager {
-  static const int kWidth = 3000;
-  static const int kHeight = 1800;
   static const int kMajorVersion = 2;
   static const int kMinorVersion = 1;
 
@@ -26,6 +24,9 @@ class GlManager {
     kGrey,
     kLightBlue,
   };
+
+  static const int kWidth = 3000;
+  static const int kHeight = 1800;
 
  public:
   GlManager() = default;
@@ -105,7 +106,7 @@ class GlManager {
     GLuint handler;
     glGenBuffers(1, &handler);
     glBindBuffer(GL_ARRAY_BUFFER, handler);
-    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(glm::vec3), &data[0],
+    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(T), &data[0],
                  GL_STATIC_DRAW);
     buffer_handlers_.push_back(handler);
     return handler;

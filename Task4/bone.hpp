@@ -26,7 +26,7 @@ class Bone {
       vertex += offset;
     }
     direction = current_center - cur_position;
-    // Make bone slower
+    // To make a bone slower.
     direction *= 0.1f;
   }
 
@@ -40,7 +40,7 @@ class Bone {
   static void LoadBoneObj(const char* filepath) {
     support::LoadObj(filepath, default_vertices, default_uvs,
                      default_normals);
-    RotateFireballObj();
+    RotateBoneObj();
   }
 
  public:
@@ -52,7 +52,7 @@ class Bone {
   static inline const float kDistanceToCollide = 0.35f;
 
  private:
-  static void RotateFireballObj() {
+  static void RotateBoneObj() {
     glm::mat4 trans = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f),
                                   glm::vec3(0.0f, 1.0f, 0.0f));
 
