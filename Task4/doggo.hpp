@@ -14,12 +14,12 @@ class Doggo {
     glm::vec3 offset = RandomDoggoPosition(kMinOffset, kMaxOffset);
     current_center += offset;
 
-    glm::mat4 trans =
+    glm::mat4 rotate =
         glm::rotate(glm::mat4(1.0f), float(glm::radians((float)(rand() % 360))),
                     glm::vec3(0.0f, 1.0f, 0.0f));
 
     for (glm::vec3& vertex : vertices_) {
-      vertex = glm::vec3(trans * glm::vec4(vertex, 1));
+      vertex = glm::vec3(rotate * glm::vec4(vertex, 1));
       vertex += offset;
     }
   }
