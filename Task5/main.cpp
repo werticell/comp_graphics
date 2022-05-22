@@ -19,7 +19,7 @@ using Colors = support::GlManager::BackgroundColors;
 
 GameManager game_manager;
 
-void KeyCallbacks(GLFWwindow* , int key, int , int action, int) {
+void KeyCallbacks(GLFWwindow*, int key, int, int action, int) {
   if (key == GLFW_KEY_T && action == GLFW_PRESS) {
     game_manager.IncreaseSpeedCoef();
   } else if (key == GLFW_KEY_G && action == GLFW_PRESS) {
@@ -141,7 +141,8 @@ int main() {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 
-    text_manager.Display(game_manager.GetDoggosFedCount());
+    text_manager.Display(game_manager.GetDoggosFedCount(),
+                         game_manager.GetSpeedSlowdown());
 
     // Swap buffers
     glfwSwapBuffers(manager.GetWindow());

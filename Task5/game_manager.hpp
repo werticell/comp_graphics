@@ -75,11 +75,13 @@ class GameManager {
   }
 
   void IncreaseSpeedCoef() {
+    speed_slowdown_ *= 0.3f;
     Bone::IncreaseSpeedCoefBy(0.3f);
     Heart::IncreaseSpeedCoefBy(0.3f);
   }
 
   void DecreaseSpeedCoef() {
+    speed_slowdown_ /= 0.3f;
     Bone::DecreaseSpeedCoefBy(0.3f);
     Heart::DecreaseSpeedCoefBy(0.3f);
   }
@@ -119,6 +121,10 @@ class GameManager {
   //////////////////////////////////////////////////////////////////////////////
   int GetDoggosFedCount() const {
     return doggo_fed_;
+  }
+
+  float GetSpeedSlowdown() const {
+    return speed_slowdown_;
   }
 
  private:
@@ -238,6 +244,7 @@ class GameManager {
   int64_t bones_count_ = 0;
   int64_t doggo_fed_ = 0;
   int64_t doggos_count_ = 0;
+  float speed_slowdown_ = 1.0f;
 
 
   std::vector<glm::vec3> doggos_vertices_;

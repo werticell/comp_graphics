@@ -14,10 +14,26 @@ class TextManager {
     support::CleanupText2D();
   }
 
-  void Display(uint64_t number) {
+  void Display(uint64_t number, float slowdown) {
+    PrintFedCounter(number);
+    PrintCursor();
+    PrintSpeedSlowdown(slowdown);
+  }
+
+
+ private:
+  void PrintFedCounter(uint64_t number) {
     std::string bone("Doggos fed: " + std::to_string(number));
-    support::PrintText2D(bone.data(), 0, 550, 25);
+    support::PrintText2D(bone.data(), /*x=*/0, /*y=*/550, /*size=*/25);
+  }
+
+  void PrintCursor() {
     std::string cursor("+");
-    support::PrintText2D(cursor.data(), 380, 275, 50);
+    support::PrintText2D(cursor.data(), /*x=*/380, /*y=*/275, /*size=*/50);
+  }
+
+  void PrintSpeedSlowdown(float slowdown) {
+    std::string bone("Speed slowdown: " + std::to_string(slowdown));
+    support::PrintText2D(bone.data(), /*x=*/600, /*y=*/550, /*size=*/25);
   }
 };
