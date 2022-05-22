@@ -19,9 +19,11 @@ using Colors = support::GlManager::BackgroundColors;
 
 GameManager game_manager;
 
-void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-  if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
-    game_manager.ThrowABone();
+void KeyCallbacks(GLFWwindow* , int key, int , int action, int) {
+  if (key == GLFW_KEY_T && action == GLFW_PRESS) {
+    game_manager.IncreaseSpeedCoef();
+  } else if (key == GLFW_KEY_G && action == GLFW_PRESS) {
+    game_manager.DecreaseSpeedCoef();
   }
 }
 
@@ -70,16 +72,16 @@ int main() {
 
   // Spawn starting doggos
   game_manager.AddGround();
-  game_manager.SetDoggosHeight(-1.5f);
   game_manager.SetupScene();
 
   glUseProgram(program_id);
   GLuint light_id =
       glGetUniformLocation(program_id, "LightPosition_worldspace");
 
-  TextManager text_manager("Holstein.DDS", "TextVertexShader.glsl", "TextFragmentShader.glsl");
+  TextManager text_manager("Holstein.DDS", "TextVertexShader.glsl",
+                           "TextFragmentShader.glsl");
 
-//  manager.SetMouseButtonCallback(MouseButtonCallback);
+  manager.SetKeyCallback(KeyCallbacks);
   while (!manager.ShouldQuit()) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(program_id);
@@ -150,6 +152,8 @@ int main() {
 
   glDeleteTextures(1, &bone_texture);
   glDeleteTextures(1, &doggo_texture);
+  glDeleteTextures(1, &heart_texture);
+  glDeleteTextures(1, &ground_texture);
   glDeleteVertexArrays(1, &vertex_array_id);
   return 0;
 }

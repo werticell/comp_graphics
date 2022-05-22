@@ -4,7 +4,9 @@
 
 #include <objloader.hpp>
 
-class Bone {
+#include "default_object.hpp"
+
+class Bone : public DefaultObject {
  public:
   Bone(const glm::vec3& current_look_at)
       : vertices_(default_vertices),
@@ -26,14 +28,12 @@ class Bone {
       vertex += offset;
     }
     direction = current_center - cur_position;
-    // To make a bone slower.
-    direction *= 0.1f;
   }
 
   void UpdateLocation() {
     current_center += direction;
     for (glm::vec3& vertex : vertices_) {
-      vertex += direction;
+      vertex += direction * 0.1f * speed_coef;
     }
   }
 
@@ -72,8 +72,5 @@ class Bone {
   }
 
  private:
-  static inline std::vector<glm::vec3> default_vertices;
-  static inline std::vector<glm::vec3> default_normals;
-  static inline std::vector<glm::vec2> default_uvs;
   static inline const glm::vec3 kLookAt{0.0f, 0.0f, -1.0f};
 };

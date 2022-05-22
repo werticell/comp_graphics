@@ -2,16 +2,17 @@
 
 #include <glm/glm.hpp>
 
-
 #include <objloader.hpp>
 
-class Doggo {
+#include "default_object.hpp"
+
+class Doggo : public DefaultObject {
  public:
-  Doggo(float y_coord)
+  Doggo()
       : vertices_(default_vertices),
         uvs_(default_uvs),
         normals_(default_normals) {
-    glm::vec3 offset = RandomDoggoPosition(kMinOffset, kMaxOffset, y_coord);
+    glm::vec3 offset = RandomDoggoPosition(kMinOffset, kMaxOffset);
     current_center += offset;
 
     rotate_ =
@@ -38,16 +39,14 @@ class Doggo {
   glm::mat4 rotate_;
 
  private:
-  glm::vec3 RandomDoggoPosition(int64_t min, int64_t max, float y_coord) {
+  glm::vec3 RandomDoggoPosition(int64_t min, int64_t max) {
     double phi = 2 * M_PI * rand() / RAND_MAX;
     int64_t r = min + rand() % (max - min);
-    return glm::vec3(r * sin(phi), y_coord, r * cos(phi));
+    return glm::vec3(r * sin(phi), kYOffset, r * cos(phi));
   }
 
  private:
-  static inline std::vector<glm::vec3> default_vertices;
-  static inline std::vector<glm::vec3> default_normals;
-  static inline std::vector<glm::vec2> default_uvs;
+  static const inline float kYOffset = -1.3f;
 
   static const inline int64_t kMinOffset = 8;
   static const inline int64_t kMaxOffset = 20;

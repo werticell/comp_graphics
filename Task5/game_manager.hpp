@@ -1,6 +1,8 @@
 #pragma once
 
 #include <algorithm>
+#include <optional>
+
 #include <gl_manager.hpp>
 
 #include "bone.hpp"
@@ -8,7 +10,6 @@
 #include "ground.hpp"
 #include "heart.hpp"
 
-#include <memory>
 
 class GameManager {
   static inline const int kMaxDistance = 30;
@@ -69,15 +70,22 @@ class GameManager {
   }
 
   void DrawGround(support::GlManager& manager) {
+    assert(ground_.has_value());
     Draw(manager, ground_->vertices_, ground_->normals_, ground_->uvs_);
   }
 
-  void SetDoggosHeight(float new_coord) {
-    doggos_spawn_y_coord_ = new_coord;
+  void IncreaseSpeedCoef() {
+    Bone::IncreaseSpeedCoefBy(0.3f);
+    Heart::IncreaseSpeedCoefBy(0.3f);
+  }
+
+  void DecreaseSpeedCoef() {
+    Bone::DecreaseSpeedCoefBy(0.3f);
+    Heart::DecreaseSpeedCoefBy(0.3f);
   }
 
   void AddGround() {
-    ground_ = std::unique_ptr<Ground>(new Ground());
+    ground_.emplace(Ground());
   }
 
   void TryToAddDoggo() {
@@ -120,7 +128,7 @@ class GameManager {
     }
 
     ++doggos_count_;
-    doggos_.emplace_back(Doggo(doggos_spawn_y_coord_));
+    doggos_.emplace_back(Doggo());
   }
 
   void RemoveDoggo(size_t k) {
@@ -225,13 +233,12 @@ class GameManager {
   std::vector<Bone> bones_;
   std::vector<Doggo> doggos_;
   std::vector<Heart> hearts_;
-  std::unique_ptr<Ground> ground_{nullptr};
+  std::optional<Ground> ground_;
 
   int64_t bones_count_ = 0;
   int64_t doggo_fed_ = 0;
   int64_t doggos_count_ = 0;
 
-  float doggos_spawn_y_coord_ = 0.0;
 
   std::vector<glm::vec3> doggos_vertices_;
   std::vector<glm::vec3> doggos_normals_;

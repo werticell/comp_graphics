@@ -84,8 +84,8 @@ class GlManager {
     glfwSetCursorPos(window_, kWidth / 2, kHeight / 2);
   }
 
-  void SetMouseButtonCallback(GLFWmousebuttonfun callback) {
-    glfwSetMouseButtonCallback(window_, callback);
+  void SetKeyCallback(GLFWkeyfun callback) {
+    glfwSetKeyCallback(window_, callback);
   }
 
   bool IsPressed(int button) {
@@ -146,4 +146,4 @@ class GlManager {
   std::vector<GLuint> program_handlers_;
 };
 
-}  // namespace framework
+}  // namespace support
