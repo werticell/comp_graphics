@@ -33,7 +33,7 @@ class TextManager {
   }
 
   void PrintSpeedSlowdown(float slowdown) {
-    std::string bone("Speed slowdown: " + std::to_string(slowdown));
-    support::PrintText2D(bone.data(), /*x=*/600, /*y=*/550, /*size=*/25);
+    std::string bone("Speed slowdown: " + std::to_string(slowdown).substr(0, 4));
+    support::PrintText2D(bone.data(), /*x=*/0, /*y=*/520, /*size=*/25);
   }
 };

@@ -9,6 +9,7 @@
 #include "doggo.hpp"
 #include "ground.hpp"
 #include "heart.hpp"
+#include "sky.hpp"
 
 
 class GameManager {
@@ -85,9 +86,17 @@ class GameManager {
     Bone::DecreaseSpeedCoefBy(0.3f);
     Heart::DecreaseSpeedCoefBy(0.3f);
   }
+  void DrawSky(support::GlManager& manager) {
+    Draw(manager, sky_->vertices_, sky_->normals_, sky_->uvs_);
+  }
+
 
   void AddGround() {
     ground_.emplace(Ground());
+  }
+
+  void AddSky() {
+    sky_.emplace(Sky());
   }
 
   void TryToAddDoggo() {
@@ -240,6 +249,7 @@ class GameManager {
   std::vector<Doggo> doggos_;
   std::vector<Heart> hearts_;
   std::optional<Ground> ground_;
+  std::optional<Sky> sky_;
 
   int64_t bones_count_ = 0;
   int64_t doggo_fed_ = 0;

@@ -14,6 +14,7 @@
 #include "ground.hpp"
 #include "text_manager.hpp"
 #include "heart.hpp"
+#include "sky.hpp"
 
 using Colors = support::GlManager::BackgroundColors;
 
@@ -60,6 +61,7 @@ int main() {
   GLuint doggo_texture = support::LoadDds("doggo_texture.dds");
   GLuint heart_texture = support::LoadDds("h_t_1.dds");
   GLuint ground_texture = support::LoadDds("LP.dds");
+  GLuint sky_texture = support::LoadDds("sky.dds");
 
   // Get a handle for our "myTextureSampler" variable from shader.
   GLuint texture_id = glGetUniformLocation(program_id, "myTextureSampler");
@@ -69,9 +71,11 @@ int main() {
   Heart::LoadObj("h1.obj");
   Bone::LoadBoneObj("bone.obj");
   Ground::LoadObj("LP.obj");
+  Sky::LoadObj("sky2.obj");
 
   // Spawn starting doggos
   game_manager.AddGround();
+  game_manager.AddSky();
   game_manager.SetupScene();
 
   glUseProgram(program_id);
@@ -131,6 +135,12 @@ int main() {
     glUniform1i(texture_id, 0);
 
     game_manager.DrawGround(manager);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, sky_texture);
+    glUniform1i(texture_id, 0);
+
+    game_manager.DrawSky(manager);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, heart_texture);

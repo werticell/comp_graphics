@@ -6,7 +6,7 @@
 
 #include "default_object.hpp"
 
-class Doggo : public DefaultObject {
+class Doggo : public DefaultObject<Doggo> {
  public:
   Doggo()
       : vertices_(default_vertices),
@@ -46,8 +46,7 @@ class Doggo : public DefaultObject {
   }
 
  private:
-  static const inline float kYOffset = -1.3f;
-
+  static const inline float kYOffset = -1.6f;
   static const inline int64_t kMinOffset = 8;
   static const inline int64_t kMaxOffset = 20;
 };

@@ -1,5 +1,5 @@
 #pragma once
-
+template <typename T>
 class DefaultObject {
  public:
   static void IncreaseSpeedCoefBy(float factor) {

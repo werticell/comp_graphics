@@ -6,7 +6,7 @@
 
 #include "default_object.hpp"
 
-class Bone : public DefaultObject {
+class Bone : public DefaultObject<Bone> {
  public:
   Bone(const glm::vec3& current_look_at)
       : vertices_(default_vertices),
@@ -31,7 +31,7 @@ class Bone : public DefaultObject {
   }
 
   void UpdateLocation() {
-    current_center += direction;
+    current_center += direction * 0.1f * speed_coef;
     for (glm::vec3& vertex : vertices_) {
       vertex += direction * 0.1f * speed_coef;
     }

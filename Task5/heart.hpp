@@ -4,7 +4,7 @@
 
 #include "default_object.hpp"
 
-class Heart : public DefaultObject {
+class Heart : public DefaultObject<Heart> {
  public:
   Heart(glm::vec3& offset, glm::mat4& rotate)
       : spawn_point_(offset),
