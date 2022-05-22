@@ -18,6 +18,7 @@ class GameManager {
   static inline const int kMaxEnemiesCount = 20;
   static inline const double kDoggoSpawnDelay = 2.0;
   static inline const double kBoneDelay = 0.5;
+  static inline const float kSpeedChange = 0.1f;
 
  public:
   void SetupScene() {
@@ -76,15 +77,17 @@ class GameManager {
   }
 
   void IncreaseSpeedCoef() {
-    speed_slowdown_ *= 0.3f;
-    Bone::IncreaseSpeedCoefBy(0.3f);
-    Heart::IncreaseSpeedCoefBy(0.3f);
+    speed_slowdown_ *= kSpeedChange;
+    Bone::IncreaseSpeedCoefBy(kSpeedChange);
+    Heart::IncreaseSpeedCoefBy(kSpeedChange);
+    support::IncreaseMovementSpeedCoefBy(kSpeedChange);
   }
 
   void DecreaseSpeedCoef() {
-    speed_slowdown_ /= 0.3f;
-    Bone::DecreaseSpeedCoefBy(0.3f);
-    Heart::DecreaseSpeedCoefBy(0.3f);
+    speed_slowdown_ /= kSpeedChange;
+    Bone::DecreaseSpeedCoefBy(kSpeedChange);
+    Heart::DecreaseSpeedCoefBy(kSpeedChange);
+    support::DecreaseMovementSpeedCoefBy(kSpeedChange);
   }
   void DrawSky(support::GlManager& manager) {
     Draw(manager, sky_->vertices_, sky_->normals_, sky_->uvs_);

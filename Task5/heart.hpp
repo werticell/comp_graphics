@@ -50,7 +50,7 @@ class Heart : public DefaultObject<Heart> {
     return blown_;
   }
 
-  static void LoadObj(const char* filepath) {
+  static void LoadHeartObj(const char* filepath) {
     support::LoadObj(filepath, default_vertices, default_uvs, default_normals);
   }
 

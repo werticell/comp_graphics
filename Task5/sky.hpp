@@ -2,15 +2,15 @@
 
 #include "default_object.hpp"
 
-class Ground : public DefaultObject<Ground> {
+class Sky : public DefaultObject<Sky> {
  public:
-  Ground()
+  Sky()
       : vertices_(default_vertices),
         normals_(default_normals),
         uvs_(default_uvs) {
   }
 
-  static void LoadGroundObj(const char* filepath) {
+  static void LoadSkyObj(const char* filepath) {
     support::LoadObj(filepath, default_vertices, default_uvs, default_normals);
   }
 
@@ -19,5 +19,4 @@ class Ground : public DefaultObject<Ground> {
   std::vector<glm::vec3> normals_;
   std::vector<glm::vec2> uvs_;
   glm::vec3 current_center{0, 0, 0};
-
 };

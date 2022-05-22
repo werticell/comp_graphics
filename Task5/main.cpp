@@ -68,10 +68,10 @@ int main() {
 
   // Read our obj files to set default vertices of our objects.
   Doggo::LoadDoggoObj("doggo.obj");
-  Heart::LoadObj("h1.obj");
+  Heart::LoadHeartObj("h1.obj");
   Bone::LoadBoneObj("bone.obj");
-  Ground::LoadObj("LP.obj");
-  Sky::LoadObj("sky2.obj");
+  Ground::LoadGroundObj("LP.obj");
+  Sky::LoadSkyObj("sky2.obj");
 
   // Spawn starting doggos
   game_manager.AddGround();

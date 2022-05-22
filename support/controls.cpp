@@ -9,13 +9,6 @@ namespace support {
 glm::mat4 view_matrix;
 glm::mat4 projection_matrix;
 
-glm::mat4 GetViewMatrix() {
-  return view_matrix;
-}
-glm::mat4 GetProjectionMatrix() {
-  return projection_matrix;
-}
-
 // Initial position : on +Z
 glm::vec3 position = glm::vec3(0, 0, 5);
 // Initial horizontal angle : toward -Z
@@ -23,10 +16,26 @@ float horizontal_angle = 3.14f;
 // Initial vertical angle : none
 float vertical_angle = 0.0f;
 // Initial Field of View
-float initialFoV = 45.0f;
+float initial_FoV = 45.0f;
 
-float speed = 4.0f;  // 3 units / second
+float speed = 4.0f;
 float mouse_speed = 0.005f;
+
+///////////////////////////////////////////////////////////////////////////////
+
+glm::mat4 GetViewMatrix() {
+  return view_matrix;
+}
+glm::mat4 GetProjectionMatrix() {
+  return projection_matrix;
+}
+
+void IncreaseMovementSpeedCoefBy(float factor) {
+  speed *= factor;
+}
+void DecreaseMovementSpeedCoefBy(float factor) {
+  speed /= factor;
+}
 
 glm::vec3 GetPosition() {
   return position;
@@ -52,37 +61,47 @@ void ComputeMatricesFromInputs(GLFWwindow* window) {
   vertical_angle += mouse_speed * float(1800 / 2 - ypos);
 
   // Direction : Spherical coordinates to Cartesian coordinates conversion
-  glm::vec3 direction(cos(vertical_angle) * sin(horizontal_angle),
-                      sin(vertical_angle),
-                      cos(vertical_angle) * cos(horizontal_angle));
+  glm::vec3 direction(
+      cos(vertical_angle) * sin(horizontal_angle),
+      sin(vertical_angle),
+      cos(vertical_angle) * cos(horizontal_angle)
+      );
 
   // Right vector
-  glm::vec3 right = glm::vec3(sin(horizontal_angle - 3.14f / 2.0f), 0,
-                              cos(horizontal_angle - 3.14f / 2.0f));
+  glm::vec3 right = glm::vec3(
+      sin(horizontal_angle - 3.14f / 2.0f),
+      0,
+      cos(horizontal_angle - 3.14f / 2.0f)
+      );
 
   // Up vector
   glm::vec3 up = glm::cross(right, direction);
 
   // Move forward
-  if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
     position += direction * delta_time * speed;
   }
   // Move backward
-  if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
     position -= direction * delta_time * speed;
   }
   // Strafe right
-  if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
     position += right * delta_time * speed;
   }
   // Strafe left
-  if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
     position -= right * delta_time * speed;
   }
 
   // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit
   // <-> 100 units
-  projection_matrix = glm::perspective(initialFoV, 4.0f / 3.0f, 0.1f, 100.0f);
+  projection_matrix = glm::perspective(
+      initial_FoV,
+      3000.0f / 1800.0f,
+      0.1f,
+      100.0f
+      );
   // Camera matrix
   view_matrix = glm::lookAt(position, position + direction, up);
 
