@@ -6,6 +6,9 @@
 #include "bone.hpp"
 #include "doggo.hpp"
 #include "ground.hpp"
+#include "heart.hpp"
+
+#include <memory>
 
 class GameManager {
   static inline const int kMaxDistance = 30;
@@ -31,6 +34,26 @@ class GameManager {
     TryRemoveCollidedObjects();
   }
 
+  void UpdateHeartsLocations() {
+    for (size_t i = 0; i < hearts_.size();) {
+      if (glm::length(hearts_[i].current_center - hearts_[i].spawn_point_) > 10) {
+        hearts_.erase(hearts_.begin() + i);
+        continue ;
+      }
+      ++i;
+    }
+
+    std::for_each(hearts_.begin(), hearts_.end(), [](Heart& heart) {
+      if (!heart.IsBlown() && glm::length(heart.current_center - heart.spawn_point_) > 7) {
+        heart.Blow();
+      }
+    });
+
+    std::for_each(hearts_.begin(), hearts_.end(), [](Heart& heart) {
+      heart.UpdateLocation();
+    });
+  }
+
   void DrawBones(support::GlManager& manager) {
     MakeContiguousBones();
     Draw(manager, bones_vertices_, bones_normals_, bones_uvs_);
@@ -39,6 +62,22 @@ class GameManager {
   void DrawDoggos(support::GlManager& manager) {
     MakeContiguousDoggos();
     Draw(manager, doggos_vertices_, doggos_normals_, doggos_uvs_);
+  }
+
+  void DrawHearts(support::GlManager& manager) {
+    MakeContiguousHeartsAndDraw(manager);
+  }
+
+  void DrawGround(support::GlManager& manager) {
+    Draw(manager, ground_->vertices_, ground_->normals_, ground_->uvs_);
+  }
+
+  void SetDoggosHeight(float new_coord) {
+    doggos_spawn_y_coord_ = new_coord;
+  }
+
+  void AddGround() {
+    ground_ = std::unique_ptr<Ground>(new Ground());
   }
 
   void TryToAddDoggo() {
@@ -81,7 +120,7 @@ class GameManager {
     }
 
     ++doggos_count_;
-    doggos_.emplace_back(Doggo{});
+    doggos_.emplace_back(Doggo(doggos_spawn_y_coord_));
   }
 
   void RemoveDoggo(size_t k) {
@@ -101,12 +140,17 @@ class GameManager {
             Bone::kDistanceToCollide + Doggo::kDistanceToCollide) {
           ++doggo_fed_;
           RemoveBone(i);
+          CreateHeart(doggos_[j]);
           RemoveDoggo(j);
           --i;
           break;
         }
       }
     }
+  }
+
+  void CreateHeart(Doggo& doggo) {
+    hearts_.push_back(Heart(doggo.current_center, doggo.rotate_));
   }
 
   void MakeContiguousDoggos() {
@@ -134,6 +178,20 @@ class GameManager {
                             bone.normals_.end());
       bones_uvs_.insert(bones_uvs_.end(), bone.uvs_.begin(), bone.uvs_.end());
     }
+  }
+
+  void MakeContiguousHeartsAndDraw(support::GlManager& manager) {
+    std::vector<glm::vec3> vertices;
+    std::vector<glm::vec3> normals;
+    std::vector<glm::vec2> uvs;
+    for (auto& heart : hearts_) {
+      vertices.insert(vertices.end(), heart.vertices_.begin(),
+                      heart.vertices_.end());
+      normals.insert(normals.end(), heart.normals_.begin(),
+                     heart.normals_.end());
+      uvs.insert(uvs.end(), heart.uvs_.begin(), heart.uvs_.end());
+    }
+    Draw(manager, vertices, normals, uvs);
   }
 
   void Draw(support::GlManager& manager, std::vector<glm::vec3>& vertices,
@@ -166,11 +224,14 @@ class GameManager {
   glm::vec3 cur_look_at_{1.0f, 0.0f, 1.0f};
   std::vector<Bone> bones_;
   std::vector<Doggo> doggos_;
-  Ground ground_;
+  std::vector<Heart> hearts_;
+  std::unique_ptr<Ground> ground_{nullptr};
 
   int64_t bones_count_ = 0;
   int64_t doggo_fed_ = 0;
   int64_t doggos_count_ = 0;
+
+  float doggos_spawn_y_coord_ = 0.0;
 
   std::vector<glm::vec3> doggos_vertices_;
   std::vector<glm::vec3> doggos_normals_;

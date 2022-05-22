@@ -11,8 +11,9 @@
 
 #include "game_manager.hpp"
 #include "gl_manager.hpp"
+#include "ground.hpp"
 #include "text_manager.hpp"
-//#include "ground.hpp"
+#include "heart.hpp"
 
 using Colors = support::GlManager::BackgroundColors;
 
@@ -55,16 +56,21 @@ int main() {
   // Load textures for doggos and bones.
   GLuint bone_texture = support::LoadDds("bone_texture.dds");
   GLuint doggo_texture = support::LoadDds("doggo_texture.dds");
+  GLuint heart_texture = support::LoadDds("h_t_1.dds");
+  GLuint ground_texture = support::LoadDds("LP.dds");
 
   // Get a handle for our "myTextureSampler" variable from shader.
   GLuint texture_id = glGetUniformLocation(program_id, "myTextureSampler");
 
   // Read our obj files to set default vertices of our objects.
   Doggo::LoadDoggoObj("doggo.obj");
+  Heart::LoadObj("h1.obj");
   Bone::LoadBoneObj("bone.obj");
-  Ground::LoadObj("grass.obj");
+  Ground::LoadObj("LP.obj");
 
   // Spawn starting doggos
+  game_manager.AddGround();
+  game_manager.SetDoggosHeight(-1.5f);
   game_manager.SetupScene();
 
   glUseProgram(program_id);
@@ -73,7 +79,7 @@ int main() {
 
   TextManager text_manager("Holstein.DDS", "TextVertexShader.glsl", "TextFragmentShader.glsl");
 
-  manager.SetMouseButtonCallback(MouseButtonCallback);
+//  manager.SetMouseButtonCallback(MouseButtonCallback);
   while (!manager.ShouldQuit()) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(program_id);
@@ -93,6 +99,8 @@ int main() {
       game_manager.TryToThrowABone();
     }
     game_manager.UpdateBonesLocation();
+
+    game_manager.UpdateHeartsLocations();
 
     // Move mvp data to shaders.
     glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, &mvp[0][0]);
@@ -115,6 +123,18 @@ int main() {
     glUniform1i(texture_id, 0);
 
     game_manager.DrawBones(manager);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, ground_texture);
+    glUniform1i(texture_id, 0);
+
+    game_manager.DrawGround(manager);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, heart_texture);
+    glUniform1i(texture_id, 0);
+
+    game_manager.DrawHearts(manager);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
