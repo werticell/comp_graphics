@@ -28,10 +28,24 @@ class GameManager {
     }
   }
 
+  void SwitchBonesDetailing() {
+    Bone::SwitchDetailing();
+  }
+
   void UpdateBonesLocation() {
-    std::remove_if(bones_.begin(), bones_.end(), [](const Bone& bone) {
-      return glm::length(bone.current_center) > kMaxDistance;
-    });
+//    std::remove_if(bones_.begin(), bones_.end(), [](const Bone& bone) {
+//      return glm::length(bone.current_center) > kMaxDistance;
+//    });
+
+    for (size_t i = 0; i < bones_.size(); ++i) {
+      if (glm::length(bones_[i].current_center) > kMaxDistance) {
+        bones_.erase(bones_.begin() + i);
+        continue ;
+      }
+      ++i;
+    }
+
+    std::for_each(bones_.begin(), bones_.end(), [](Bone& bone) {bone.TryChangeDetailing();});
 
     std::for_each(bones_.begin(), bones_.end(),
                   [](Bone& bone) { bone.UpdateLocation(); });

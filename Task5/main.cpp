@@ -25,6 +25,8 @@ void KeyCallbacks(GLFWwindow*, int key, int, int action, int) {
     game_manager.IncreaseSpeedCoef();
   } else if (key == GLFW_KEY_G && action == GLFW_PRESS) {
     game_manager.DecreaseSpeedCoef();
+  } else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+    game_manager.SwitchBonesDetailing();
   }
 }
 
@@ -72,6 +74,8 @@ int main() {
   Doggo::LoadObj("doggo.obj");
   Heart::LoadObj("heart.obj");
   Bone::LoadObj("bone.obj");
+  Bone::LoadLowObj("boneLow.obj");
+  Bone::LoadMediumObj("boneMedium.obj");
   Ground::LoadObj("ground.obj");
   Sky::LoadObj("sky.obj");
 
