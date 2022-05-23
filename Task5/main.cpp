@@ -69,21 +69,20 @@ int main() {
   GLuint texture_id = glGetUniformLocation(program_id, "myTextureSampler");
 
   // Read our obj files to set default vertices of our objects.
-  Doggo::LoadDoggoObj("doggo.obj");
-  Heart::LoadHeartObj("heart.obj");
-  Bone::LoadBoneObj("bone.obj");
-  Ground::LoadGroundObj("ground.obj");
-  Sky::LoadSkyObj("sky.obj");
+  Doggo::LoadObj("doggo.obj");
+  Heart::LoadObj("heart.obj");
+  Bone::LoadObj("bone.obj");
+  Ground::LoadObj("ground.obj");
+  Sky::LoadObj("sky.obj");
 
   // Spawn starting doggos
   game_manager.AddGround();
   game_manager.AddSky();
   game_manager.SetupScene();
-  game_manager.SetLight(program_id, light_color_id, light_power_id);
 
-//  glUseProgram(program_id);
-//  GLuint light_id =
-//      glGetUniformLocation(program_id, "LightPosition_worldspace");
+  GLuint light_id =
+      glGetUniformLocation(program_id, "LightPosition_worldspace");
+  game_manager.SetLight(light_id, light_color_id, light_power_id);
 
   TextManager text_manager("Holstein.DDS", "TextVertexShader.glsl",
                            "TextFragmentShader.glsl");
@@ -118,12 +117,6 @@ int main() {
     glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, &model_matrix[0][0]);
     glUniformMatrix4fv(view_matrix_id, 1, GL_FALSE, &view_matrix[0][0]);
 
-//    const GLfloat x[3] = {0.949, 0.811, 0.227};
-//    glUniform3fv(light_color_id, 1, x);
-//    glUniform1f(light_power_id, 150.f);
-
-//    glm::vec3 light_pos = glm::vec3(0, 7, 0);
-//    glUniform3f(light_id, light_pos.x, light_pos.y, light_pos.z);
     game_manager.DisplayLight();
 
     // Set texture for Doggos.
@@ -162,7 +155,8 @@ int main() {
     glDisableVertexAttribArray(1);
 
     text_manager.Display(game_manager.GetDoggosFedCount(),
-                         game_manager.GetSpeedSlowdown(), game_manager.GetDaysCount());
+                         game_manager.GetSpeedSlowdown(),
+                         game_manager.GetDaysCount());
 
     // Swap buffers
     glfwSwapBuffers(manager.GetWindow());

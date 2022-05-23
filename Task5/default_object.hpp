@@ -2,11 +2,11 @@
 template <typename T>
 class DefaultObject {
  public:
-  static void IncreaseSpeedCoefBy(float factor) {
+  static void IncreaseSpeedBy(float factor) {
     speed_coef *= factor;
   }
 
-  static void DecreaseSpeedCoefBy(float factor) {
+  static void DecreaseSpeedBy(float factor) {
     speed_coef /= factor;
   }
  protected:

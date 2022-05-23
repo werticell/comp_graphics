@@ -2,10 +2,7 @@
 
 #include <glm/glm.hpp>
 
-
-
 class Light {
- private:
   enum State {
     kSunrise,
     kSunset,
@@ -13,19 +10,12 @@ class Light {
     kMoonSet,
   };
 
-
  public:
-  Light(GLuint program_id, GLuint color_id, GLuint power_id)
-      : light_id_(glGetUniformLocation(program_id, "LightPosition_worldspace")),
-        color_id_(color_id),
-        power_id_(power_id) {
+  Light(GLuint light_id, GLuint color_id, GLuint power_id)
+      : light_id_(light_id), color_id_(color_id), power_id_(power_id) {
     SetToRisePosition(kSunrise);
     rise_direction_ = (zenith_position_ - rise_position_) / steps_count_;
     set_direction_ = (set_position_ - zenith_position_) / steps_count_;
-    //    std::cout << "rise x: " << rise_direction_.x << " y: " <<
-    //    rise_direction_.y << " z: " << rise_direction_.z << std::endl;
-    //    std::cout << "set x: " << set_direction_.x << " y: " <<
-    //    set_direction_.y << " z: " << set_direction_.z << std::endl;
   }
 
   bool UpdatePosition() {
@@ -47,7 +37,6 @@ class Light {
           light_state_ = kSunset;
         }
         return value;
-        break;
       }
       case kSunset: {
         std::vector<GLfloat> color = {0.976, 0.964, 0.643};
@@ -59,15 +48,12 @@ class Light {
         }
         glUniform3fv(color_id_, 1, color.data());
         glUniform1f(power_id_, power);
-        //      std::cout << "setting " << std::endl;
         if (CanSet()) {
           position_ += set_direction_ * speed_coefficient_;
         } else {
           SetToRisePosition(kMoonRise);
-//          value = true;
         }
         return value;
-        break;
       }
       case kMoonRise: {
         std::vector<GLfloat> color = {0.235, 0.043, 0.678};
@@ -80,10 +66,9 @@ class Light {
           light_state_ = kMoonSet;
         }
         return value;
-        break ;
       }
       case kMoonSet: {
-          std::vector<GLfloat> color = {0.066, 0.023, 0.396};
+        std::vector<GLfloat> color = {0.066, 0.023, 0.396};
         GLfloat power = 125.f;
         glUniform3fv(color_id_, 1, color.data());
         glUniform1f(power_id_, power);
@@ -94,7 +79,6 @@ class Light {
           value = true;
         }
         return value;
-        break ;
       }
     }
   }
@@ -108,8 +92,6 @@ class Light {
   }
 
   void Display() {
-    //    std::cout << "x: " << position_.x << " y: " << position_.y << " z: "
-    //    << position_.z << std::endl;
     glUniform3f(light_id_, position_.x, position_.y, position_.z);
   }
 
@@ -126,15 +108,12 @@ class Light {
     return position_.y > 17.f;
   }
 
-//  bool InZenithSetting() {
-//    return position_.y > 20.0f;
-//  }
-
   void SetToRisePosition(State state) {
     position_ = rise_position_;
     light_state_ = state;
   }
 
+ private:
   GLuint light_id_;
   GLuint color_id_;
   GLuint power_id_;
@@ -144,7 +123,6 @@ class Light {
   glm::vec3 rise_direction_;
   glm::vec3 set_direction_;
 
- private:
   const glm::vec3 rise_position_{-32.2019f, -1.1368f, -1.15402f};
   const glm::vec3 zenith_position_{-0.408491f, 32.8551f, 3.27468f};
   const glm::vec3 set_position_{28.5246f, -0.79088f, -3.41769f};

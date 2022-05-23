@@ -83,16 +83,16 @@ class GameManager {
 
   void IncreaseSpeedCoef() {
     speed_slowdown_ *= kSpeedChange;
-    Bone::IncreaseSpeedCoefBy(kSpeedChange);
-    Heart::IncreaseSpeedCoefBy(kSpeedChange);
+    Bone::IncreaseSpeedBy(kSpeedChange);
+    Heart::IncreaseSpeedBy(kSpeedChange);
     support::IncreaseMovementSpeedCoefBy(kSpeedChange);
     light_->IncreaseSpeedBy(kSpeedChange);
   }
 
   void DecreaseSpeedCoef() {
     speed_slowdown_ /= kSpeedChange;
-    Bone::DecreaseSpeedCoefBy(kSpeedChange);
-    Heart::DecreaseSpeedCoefBy(kSpeedChange);
+    Bone::DecreaseSpeedBy(kSpeedChange);
+    Heart::DecreaseSpeedBy(kSpeedChange);
     support::DecreaseMovementSpeedCoefBy(kSpeedChange);
     light_->DecreaseSpeedBy(kSpeedChange);
   }

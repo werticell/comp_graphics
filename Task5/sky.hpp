@@ -10,7 +10,7 @@ class Sky : public DefaultObject<Sky> {
         uvs_(default_uvs) {
   }
 
-  static void LoadSkyObj(const char* filepath) {
+  static void LoadObj(const char* filepath) {
     support::LoadObj(filepath, default_vertices, default_uvs, default_normals);
   }
 
@@ -18,5 +18,4 @@ class Sky : public DefaultObject<Sky> {
   std::vector<glm::vec3> vertices_;
   std::vector<glm::vec3> normals_;
   std::vector<glm::vec2> uvs_;
-  glm::vec3 current_center{0, 0, 0};
 };
