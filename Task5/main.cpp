@@ -55,32 +55,35 @@ int main() {
   GLuint mvp_matrix_id = glGetUniformLocation(program_id, "MVP");
   GLuint view_matrix_id = glGetUniformLocation(program_id, "V");
   GLuint model_matrix_id = glGetUniformLocation(program_id, "M");
+  GLuint light_color_id = glGetUniformLocation(program_id, "LightColor");
+  GLuint light_power_id = glGetUniformLocation(program_id, "LightPower");
 
   // Load textures for doggos and bones.
   GLuint bone_texture = support::LoadDds("bone_texture.dds");
   GLuint doggo_texture = support::LoadDds("doggo_texture.dds");
-  GLuint heart_texture = support::LoadDds("h_t_1.dds");
-  GLuint ground_texture = support::LoadDds("LP.dds");
-  GLuint sky_texture = support::LoadDds("sky.dds");
+  GLuint heart_texture = support::LoadDds("heart_texture.dds");
+  GLuint ground_texture = support::LoadDds("ground_texture.dds");
+  GLuint sky_texture = support::LoadDds("sky_texture.dds");
 
   // Get a handle for our "myTextureSampler" variable from shader.
   GLuint texture_id = glGetUniformLocation(program_id, "myTextureSampler");
 
   // Read our obj files to set default vertices of our objects.
   Doggo::LoadDoggoObj("doggo.obj");
-  Heart::LoadHeartObj("h1.obj");
+  Heart::LoadHeartObj("heart.obj");
   Bone::LoadBoneObj("bone.obj");
-  Ground::LoadGroundObj("LP.obj");
-  Sky::LoadSkyObj("sky2.obj");
+  Ground::LoadGroundObj("ground.obj");
+  Sky::LoadSkyObj("sky.obj");
 
   // Spawn starting doggos
   game_manager.AddGround();
   game_manager.AddSky();
   game_manager.SetupScene();
+  game_manager.SetLight(program_id, light_color_id, light_power_id);
 
-  glUseProgram(program_id);
-  GLuint light_id =
-      glGetUniformLocation(program_id, "LightPosition_worldspace");
+//  glUseProgram(program_id);
+//  GLuint light_id =
+//      glGetUniformLocation(program_id, "LightPosition_worldspace");
 
   TextManager text_manager("Holstein.DDS", "TextVertexShader.glsl",
                            "TextFragmentShader.glsl");
@@ -108,13 +111,20 @@ int main() {
 
     game_manager.UpdateHeartsLocations();
 
+    game_manager.UpdateLightLocation();
+
     // Move mvp data to shaders.
     glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, &mvp[0][0]);
     glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, &model_matrix[0][0]);
     glUniformMatrix4fv(view_matrix_id, 1, GL_FALSE, &view_matrix[0][0]);
 
-    glm::vec3 light_pos = glm::vec3(0, 7, 0);
-    glUniform3f(light_id, light_pos.x, light_pos.y, light_pos.z);
+//    const GLfloat x[3] = {0.949, 0.811, 0.227};
+//    glUniform3fv(light_color_id, 1, x);
+//    glUniform1f(light_power_id, 150.f);
+
+//    glm::vec3 light_pos = glm::vec3(0, 7, 0);
+//    glUniform3f(light_id, light_pos.x, light_pos.y, light_pos.z);
+    game_manager.DisplayLight();
 
     // Set texture for Doggos.
     glActiveTexture(GL_TEXTURE0);
@@ -152,7 +162,7 @@ int main() {
     glDisableVertexAttribArray(1);
 
     text_manager.Display(game_manager.GetDoggosFedCount(),
-                         game_manager.GetSpeedSlowdown());
+                         game_manager.GetSpeedSlowdown(), game_manager.GetDaysCount());
 
     // Swap buffers
     glfwSwapBuffers(manager.GetWindow());

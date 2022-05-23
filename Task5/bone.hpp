@@ -28,6 +28,21 @@ class Bone : public DefaultObject<Bone> {
       vertex += offset;
     }
     direction = current_center - cur_position;
+//    direction[1] = 0.0f;
+
+
+
+    current_center = support::GetPosition();
+//    std::cout << "centre| x: " << current_center[0] << " y: " << current_center[1] << " z: " << current_center[2] << std::endl;
+//    for (auto& vert: vertices_) {
+//      vert += current_center;
+//    }
+//    auto current_pos = current_look_at;
+//    std::cout << "camera| x: " << current_pos[0] << " y: " << current_pos[1] << " z: " << current_pos[2] << std::endl;
+//    current_pos[1] = current_center[1];
+//    direction = current_pos - current_center;
+//    direction[2] *= -1.0f;
+//    current_center = current_pos;
   }
 
   void UpdateLocation() {

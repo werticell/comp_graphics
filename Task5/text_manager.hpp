@@ -14,10 +14,11 @@ class TextManager {
     support::CleanupText2D();
   }
 
-  void Display(uint64_t number, float slowdown) {
+  void Display(uint64_t number, float slowdown, int64_t days_count) {
     PrintFedCounter(number);
     PrintCursor();
     PrintSpeedSlowdown(slowdown);
+    PrintDaysCount(days_count);
   }
 
 
@@ -33,7 +34,12 @@ class TextManager {
   }
 
   void PrintSpeedSlowdown(float slowdown) {
-    std::string bone("Speed slowdown: " + std::to_string(slowdown).substr(0, 4));
-    support::PrintText2D(bone.data(), /*x=*/0, /*y=*/520, /*size=*/25);
+    std::string speed("Speed: " + std::to_string(slowdown).substr(0, 4));
+    support::PrintText2D(speed.data(), /*x=*/0, /*y=*/520, /*size=*/25);
+  }
+
+  void PrintDaysCount(int64_t count) {
+    std::string days("Days: " + std::to_string(count));
+    support::PrintText2D(days.data(), /*x=*/0, /*y=*/490, /*size=*/25);
   }
 };

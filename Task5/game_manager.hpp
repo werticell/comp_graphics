@@ -10,6 +10,7 @@
 #include "ground.hpp"
 #include "heart.hpp"
 #include "sky.hpp"
+#include "light.hpp"
 
 
 class GameManager {
@@ -18,7 +19,7 @@ class GameManager {
   static inline const int kMaxEnemiesCount = 20;
   static inline const double kDoggoSpawnDelay = 2.0;
   static inline const double kBoneDelay = 0.5;
-  static inline const float kSpeedChange = 0.1f;
+  static inline const float kSpeedChange = 0.5f;
 
  public:
   void SetupScene() {
@@ -57,6 +58,10 @@ class GameManager {
     });
   }
 
+  void UpdateLightLocation() {
+    days_count_ += light_->UpdatePosition();
+  }
+
   void DrawBones(support::GlManager& manager) {
     MakeContiguousBones();
     Draw(manager, bones_vertices_, bones_normals_, bones_uvs_);
@@ -81,6 +86,7 @@ class GameManager {
     Bone::IncreaseSpeedCoefBy(kSpeedChange);
     Heart::IncreaseSpeedCoefBy(kSpeedChange);
     support::IncreaseMovementSpeedCoefBy(kSpeedChange);
+    light_->IncreaseSpeedBy(kSpeedChange);
   }
 
   void DecreaseSpeedCoef() {
@@ -88,11 +94,16 @@ class GameManager {
     Bone::DecreaseSpeedCoefBy(kSpeedChange);
     Heart::DecreaseSpeedCoefBy(kSpeedChange);
     support::DecreaseMovementSpeedCoefBy(kSpeedChange);
+    light_->DecreaseSpeedBy(kSpeedChange);
   }
+
   void DrawSky(support::GlManager& manager) {
     Draw(manager, sky_->vertices_, sky_->normals_, sky_->uvs_);
   }
 
+  void DisplayLight() {
+    light_->Display();
+  }
 
   void AddGround() {
     ground_.emplace(Ground());
@@ -100,6 +111,10 @@ class GameManager {
 
   void AddSky() {
     sky_.emplace(Sky());
+  }
+
+  void SetLight(GLuint program_id, GLuint color_id, GLuint power_id) {
+    light_.emplace(Light(program_id, color_id, power_id));
   }
 
   void TryToAddDoggo() {
@@ -137,6 +152,10 @@ class GameManager {
 
   float GetSpeedSlowdown() const {
     return speed_slowdown_;
+  }
+
+  int64_t GetDaysCount() const {
+    return days_count_;
   }
 
  private:
@@ -253,10 +272,12 @@ class GameManager {
   std::vector<Heart> hearts_;
   std::optional<Ground> ground_;
   std::optional<Sky> sky_;
+  std::optional<Light> light_;
 
   int64_t bones_count_ = 0;
   int64_t doggo_fed_ = 0;
   int64_t doggos_count_ = 0;
+  int64_t days_count_ = 0;
   float speed_slowdown_ = 1.0f;
 
 

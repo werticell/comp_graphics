@@ -10,7 +10,7 @@ glm::mat4 view_matrix;
 glm::mat4 projection_matrix;
 
 // Initial position : on +Z
-glm::vec3 position = glm::vec3(0, 0, 5);
+glm::vec3 position = glm::vec3(0, -1.5f, 0);
 // Initial horizontal angle : toward -Z
 float horizontal_angle = 3.14f;
 // Initial vertical angle : none
@@ -93,6 +93,8 @@ void ComputeMatricesFromInputs(GLFWwindow* window) {
   if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
     position -= right * delta_time * speed;
   }
+
+//  position[1] = 0;
 
   // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit
   // <-> 100 units
