@@ -9,13 +9,11 @@
 #include <string>
 #include <vector>
 
-namespace framework {
+namespace support {
 
 // Manages resources of the OpenGL program.
-// On destruction cleans up everything in the program.
+// On destruction cleans up mostly everything in the program.
 class GlManager {
-  static const int kWidth = 1024;
-  static const int kHeight = 768;
   static const int kMajorVersion = 2;
   static const int kMinorVersion = 1;
 
@@ -23,7 +21,12 @@ class GlManager {
   enum BackgroundColors {
     kWhite,
     kDarkBlue,
+    kGrey,
+    kLightBlue,
   };
+
+  static const int kWidth = 3000;
+  static const int kHeight = 1800;
 
  public:
   GlManager() = default;
@@ -73,6 +76,22 @@ class GlManager {
     glDepthFunc(GL_LESS);
   }
 
+  void SetupCursor() const {
+    // Hide the mouse and enable unlimited movement
+    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // Set the mouse at the center of the screen
+    glfwPollEvents();
+    glfwSetCursorPos(window_, kWidth / 2, kHeight / 2);
+  }
+
+  void SetKeyCallback(GLFWkeyfun callback) {
+    glfwSetKeyCallback(window_, callback);
+  }
+
+  bool IsPressed(int button) {
+    return GLFW_PRESS == glfwGetMouseButton(window_, button);
+  }
+
   GLuint MakeStaticDrawBuffer(const float data[], size_t data_size) {
     GLuint handler;
     glGenBuffers(1, &handler);
@@ -82,10 +101,21 @@ class GlManager {
     return handler;
   }
 
+  template <typename T>
+  GLuint MakeStaticDrawBuffer(std::vector<T>& data) {
+    GLuint handler;
+    glGenBuffers(1, &handler);
+    glBindBuffer(GL_ARRAY_BUFFER, handler);
+    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(T), &data[0],
+                 GL_STATIC_DRAW);
+    buffer_handlers_.push_back(handler);
+    return handler;
+  }
+
   GLuint LoadShaders(const char* vertex_file_path,
                      const char* fragment_file_path) {
     GLuint program_id =
-        framework::LoadShaders(vertex_file_path, fragment_file_path);
+        support::LoadShaders(vertex_file_path, fragment_file_path);
     program_handlers_.push_back(program_id);
     return program_id;
   }
@@ -107,6 +137,7 @@ class GlManager {
     }
   }
 
+
  private:
   GLFWwindow* window_ = nullptr;
   bool glfw_initialised_ = false;
@@ -115,4 +146,4 @@ class GlManager {
   std::vector<GLuint> program_handlers_;
 };
 
-}  // namespace framework
+}  // namespace support

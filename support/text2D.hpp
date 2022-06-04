@@ -1,6 +1,9 @@
 #pragma once
 
+namespace support {
 
-void initText2D(const char * texturePath);
-void printText2D(const char * text, int x, int y, int size);
-void cleanupText2D();
+void InitText2D(const char* texture_path, const char* text_vertex_shader,
+                const char* text_fragment_shader);
+void PrintText2D(const char* text, int x, int y, int size);
+void CleanupText2D();
+}  // namespace support

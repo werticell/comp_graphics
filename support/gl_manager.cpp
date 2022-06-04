@@ -1,6 +1,6 @@
 #include "gl_manager.hpp"
 
-namespace framework {
+namespace support {
 
 bool GlManager::MakeWindow(std::string name) {
   glfwWindowHint(GLFW_SAMPLES, 4);
@@ -19,6 +19,12 @@ void GlManager::SetBackgroundColor(BackgroundColors color) const {
       break;
     case kDarkBlue:
       glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+      break;
+    case kGrey:
+      glClearColor(0.1f, 0.1f, 0.1f, 0);
+      break;
+    case kLightBlue:
+      glClearColor(0.403f, 0.498f, 0.878f, 0);
       break;
   }
 }

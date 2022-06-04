@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18)
 project(computer_graphics)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 if (APPLE)
   # Add header file
@@ -49,3 +49,4 @@ add_subdirectory(Task1)
 add_subdirectory(Task2)
 add_subdirectory(Task3)
 add_subdirectory(Task4)
+add_subdirectory(Task5)
